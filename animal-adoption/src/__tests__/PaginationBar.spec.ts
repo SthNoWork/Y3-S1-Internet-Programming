@@ -14,9 +14,16 @@ describe('PaginationBar.vue', () => {
     const buttons = wrapper.findAll('.number-btn')
     expect(buttons).toHaveLength(3)
 
-    // Click page 2
-    await buttons[1].trigger('click')
-    expect(wrapper.emitted('change')).toBeTruthy()
-    expect(wrapper.emitted('change')?.[0]).toEqual([2])
+    const secondButton = buttons[1]
+    expect(secondButton).toBeDefined()
+    if (secondButton) {
+      await secondButton.trigger('click')
+    }
+
+    const emitted = wrapper.emitted('change')
+    expect(emitted).toBeDefined()
+    if (emitted && emitted[0]) {
+      expect(emitted[0]).toEqual([2])
+    }
   })
 })
