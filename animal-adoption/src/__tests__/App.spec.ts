@@ -4,7 +4,7 @@ import App from '../App.vue'
 import router from '../router'
 
 describe('App', () => {
-  it('mounts renders properly with navigation brand', async () => {
+  it('mounts renders properly with navigation brand and links', async () => {
     router.push('/animals')
     await router.isReady()
 
@@ -13,7 +13,8 @@ describe('App', () => {
         plugins: [router],
       },
     })
-    expect(wrapper.text()).toContain('PawMatch')
+    expect(wrapper.text()).toContain('Paw Finder')
     expect(wrapper.text()).toContain('Browse Animals')
+    expect(wrapper.text()).toContain('Shelter Map')
   })
 })

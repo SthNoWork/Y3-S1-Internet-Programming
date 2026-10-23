@@ -16,14 +16,10 @@ describe('PaginationBar.vue', () => {
 
     const secondButton = buttons[1]
     expect(secondButton).toBeDefined()
-    if (secondButton) {
-      await secondButton.trigger('click')
-    }
+    await secondButton?.trigger('click')
 
     const emitted = wrapper.emitted('change')
     expect(emitted).toBeDefined()
-    if (emitted && emitted[0]) {
-      expect(emitted[0]).toEqual([2])
-    }
+    expect(emitted?.[0]).toEqual([2])
   })
 })

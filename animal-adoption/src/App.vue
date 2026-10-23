@@ -8,11 +8,12 @@ import { RouterLink, RouterView } from 'vue-router'
       <div class="header-container">
         <RouterLink to="/animals" class="brand-link">
           <span class="brand-logo">🐾</span>
-          <span class="brand-title">PawMatch</span>
+          <span class="brand-title">Paw Finder</span>
         </RouterLink>
 
         <nav class="nav-links">
           <RouterLink to="/animals" class="nav-item">Browse Animals</RouterLink>
+          <RouterLink to="/map" class="nav-item">Shelter Map</RouterLink>
           <RouterLink to="/accounts/1" class="nav-item">Shelter Profile</RouterLink>
           <RouterLink to="/accounts/2" class="nav-item test-tag">Test Empty Case</RouterLink>
           <RouterLink to="/accounts/3" class="nav-item test-tag">Test Banned Case</RouterLink>
