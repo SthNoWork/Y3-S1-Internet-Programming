@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import MapView from '@/components/MapView.vue'
+// import MapView from './components/MapView.vue'
+import ProfileCard from './components/ProfileCard.vue'
 </script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
-  <MapView />
+  <!-- <MapView /> -->
+  <ProfileCard name="John Doe" description="A brief description about John Doe." imageUrl="/image.png" />
 </template>
 
 <style scoped></style>
