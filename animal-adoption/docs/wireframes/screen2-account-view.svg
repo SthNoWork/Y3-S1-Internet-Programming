@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 650" width="100%" height="100%" style="background:#f8fafc; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <style>
+      .title { font-size: 20px; font-weight: 700; fill: #1e293b; }
+      .text-sm { font-size: 12px; fill: #64748b; }
+      .text-md { font-size: 14px; fill: #334155; }
+      .text-bold { font-weight: 600; }
+      .box { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; rx: 8; }
+      .box-muted { fill: #f1f5f9; stroke: #cbd5e1; stroke-width: 1.5; rx: 6; }
+      .badge-role { fill: #e0e7ff; stroke: #6366f1; rx: 12; }
+      .badge-primary { fill: #e0f2fe; stroke: #0284c7; rx: 12; }
+    </style>
+  </defs>
+
+  <!-- Navbar -->
+  <rect x="20" y="20" width="760" height="50" class="box" />
+  <text x="40" y="52" class="title">🐾 PawMatch - Animal Adoption</text>
+  <rect x="620" y="30" width="70" height="30" class="box-muted" />
+  <text x="655" y="50" class="text-md" text-anchor="middle">Browse</text>
+  <rect x="700" y="30" width="65" height="30" class="box-muted" />
+  <text x="732" y="50" class="text-md text-bold" text-anchor="middle">Profile</text>
+
+  <!-- Back Link -->
+  <text x="25" y="100" font-size="13" font-weight="600" fill="#0284c7">← Back to Animals List</text>
+
+  <!-- Account Header Component (AccountHeader) -->
+  <rect x="20" y="115" width="760" height="150" class="box" />
+  <!-- Avatar Placeholder -->
+  <circle cx="85" cy="190" r="45" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2" />
+  <text x="85" y="195" font-size="14" fill="#64748b" text-anchor="middle">Avatar</text>
+
+  <!-- Account Details -->
+  <text x="155" y="155" class="title">Happy Paws Shelter</text>
+  <rect x="360" y="137" width="65" height="22" class="badge-role" />
+  <text x="392" y="152" font-size="11" font-weight="600" fill="#4338ca" text-anchor="middle">POSTER</text>
+
+  <text x="155" y="180" class="text-sm">📍 Location: Riverside District (13.7563, 100.5018)</text>
+  <text x="155" y="200" class="text-sm">📞 Phone: +66 81 234 5678</text>
+  <text x="155" y="225" class="text-md" fill="#475569">"Dedicated non-profit shelter focusing on rescuing, rehabilitating, and rehoming street animals."</text>
+
+  <!-- Subheading -->
+  <text x="25" y="300" class="title">Available Animals From This Shelter</text>
+  <text x="25" y="320" class="text-sm">Only showing active, available animals ready for immediate adoption.</text>
+
+  <!-- Animal Cards Grid (Reusing AnimalCard) -->
+  <g transform="translate(20, 335)">
+    <!-- Card 1 -->
+    <rect width="240" height="290" class="box" />
+    <rect x="10" y="10" width="220" height="130" class="box-muted" />
+    <text x="120" y="80" class="text-sm" text-anchor="middle">[ Animal Photo ]</text>
+    <rect x="15" y="110" width="70" height="22" class="badge-primary" />
+    <text x="50" y="125" font-size="11" font-weight="600" fill="#0369a1" text-anchor="middle">AVAILABLE</text>
+
+    <text x="15" y="165" class="text-md text-bold">Luna</text>
+    <text x="225" y="165" class="text-sm" text-anchor="end">Dog</text>
+    <text x="15" y="185" class="text-sm">Friendly golden retriever who loves</text>
+    <text x="15" y="200" class="text-sm">kids and outdoor parks.</text>
+    <rect x="15" y="215" width="70" height="20" fill="#e2e8f0" rx="10" />
+    <text x="50" y="229" font-size="10" fill="#475569" text-anchor="middle">Vaccinated</text>
+  </g>
+
+  <g transform="translate(280, 335)">
+    <!-- Card 2 -->
+    <rect width="240" height="290" class="box" />
+    <rect x="10" y="10" width="220" height="130" class="box-muted" />
+    <text x="120" y="80" class="text-sm" text-anchor="middle">[ Animal Photo ]</text>
+    <rect x="15" y="110" width="70" height="22" class="badge-primary" />
+    <text x="50" y="125" font-size="11" font-weight="600" fill="#0369a1" text-anchor="middle">AVAILABLE</text>
+
+    <text x="15" y="165" class="text-md text-bold">Rocky</text>
+    <text x="225" y="165" class="text-sm" text-anchor="end">Dog</text>
+    <text x="15" y="185" class="text-sm">Energetic young pup eager to</text>
+    <text x="15" y="200" class="text-sm">learn tricks and fetch.</text>
+    <rect x="15" y="215" width="70" height="20" fill="#e2e8f0" rx="10" />
+    <text x="50" y="229" font-size="10" fill="#475569" text-anchor="middle">Friendly</text>
+  </g>
+
+  <!-- Note on Empty / Banned state -->
+  <g transform="translate(540, 335)">
+    <rect width="240" height="290" class="box-muted" stroke-dasharray="4" />
+    <text x="120" y="130" class="text-sm text-bold" text-anchor="middle">Empty State Handling</text>
+    <text x="120" y="155" font-size="11" fill="#64748b" text-anchor="middle">If user has no active listings:</text>
+    <text x="120" y="175" font-size="11" fill="#64748b" text-anchor="middle">"No animals currently available."</text>
+    <text x="120" y="210" font-size="11" fill="#dc2626" font-weight="600" text-anchor="middle">If user is banned:</text>
+    <text x="120" y="230" font-size="11" fill="#dc2626" text-anchor="middle">Show warning &amp; hide listings</text>
+  </g>
+</svg>
