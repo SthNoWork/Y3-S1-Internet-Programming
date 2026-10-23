@@ -1,6 +1,6 @@
 # Application Wireframes
 
-This directory contains the wireframe designs for the 3 main screens of the Animal Adoption platform, satisfying Part E Step 2.
+This directory contains the wireframe designs for the 4 main screens of the Animal Adoption platform (**Paw Finder**), satisfying Part E Step 2.
 
 ## Screens Overview
 
@@ -15,3 +15,7 @@ This directory contains the wireframe designs for the 3 main screens of the Anim
 3. **Screen 3: Animal Detail View (`/animals/:id`)**
    - **File**: [`screen3-animal-detail.svg`](./screen3-animal-detail.svg)
    - **Key Elements**: High-res animal photo, tags, personality details, adoption requirements, owner/shelter card link, inquiry CTA button.
+
+4. **Screen 4: Shelters & Foster Map View (`/map`)**
+   - **File**: [`screen4-shelter-map.svg`](./screen4-shelter-map.svg)
+   - **Key Elements**: Interactive Leaflet map centered at Phnom Penh, custom circular avatar (PFP) markers with pointer tips, hover popups showing shelter information and live animal counts, click redirection to shelter profile, and accompanying caretakers directory panel.

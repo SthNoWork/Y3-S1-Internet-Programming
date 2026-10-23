@@ -1,6 +1,6 @@
 # Component Architecture (`docs/components.md`)
 
-This document defines the component hierarchy, props, events, and state ownership for the Animal Adoption application as specified in Part E.
+This document defines the component hierarchy, props, events, and state ownership for the Animal Adoption application (**Paw Finder**) as specified in Part E.
 
 ---
 
@@ -104,12 +104,43 @@ AccountView (Page / Route View)
 
 ---
 
+## Screen 3: Shelters & Foster Map View (`/map`)
+
+### Component Tree
+```text
+MapView (Page / Route View)
+  ├── Leaflet Map Container
+  │     └── Circular PFP Markers (L.divIcon for each active poster)
+  │           └── Hover Popups (Shelter details & available count)
+  └── Posters Sidebar Directory
+        └── Caretaker Cards (v-for over active posters)
+```
+
+### State Ownership & Data Flow
+
+#### **`MapView` (Parent View)**
+- **Owns State**:
+  - `map: L.Map | null` — Leaflet map instance centered at Phnom Penh (`[11.5564, 104.9282]`)
+  - `activePosterId: number | null` — Currently hovered or selected shelter ID
+  - `markers: Map<number, L.Marker>` — Registry of Leaflet marker references for programmatic map panning
+- **Computed Values**:
+  - `activePosters: User[]` — Non-banned registered caretakers with coordinates
+- **Event Contracts & Interactions**:
+  - `marker.on('mouseover')` — Opens poster popup and sets `activePosterId`
+  - `marker.on('mouseout')` — Closes popup and clears `activePosterId`
+  - `marker.on('click')` — Navigates router to `/accounts/${poster.id}`
+  - `focusPosterOnMap(poster)` — Triggered on sidebar caretaker click; smoothly pans map and opens their marker popup
+
+---
+
 ## Summary of Props Down and Events Up Flow
 
-| Screen | Parent | Child Component | Props Down | Events Up |
+| Screen | Parent | Child / Element | Props Down | Events Up |
 |---|---|---|---|---|
 | `/animals` | `AnimalsView` | `AnimalFilters` | `tags`, `search`, `species`, `selectedTagId`, `sort` | `update:search`, `update:species`, `update:tag`, `update:sort` |
 | `/animals` | `AnimalsView` | `AnimalCard` | `animal`, `owner` | *(None)* |
 | `/animals` | `AnimalsView` | `PaginationBar` | `page`, `pageCount` | `change` |
 | `/accounts/:id` | `AccountView` | `AccountHeader` | `account` | *(None)* |
 | `/accounts/:id` | `AccountView` | `AnimalCard` | `animal` | *(None)* |
+| `/map` | `MapView` | `Circular PFP Marker` | `poster`, `count` | `mouseover`, `mouseout`, `click` |
+| `/map` | `MapView` | `Posters Sidebar Item` | `poster`, `active` | `click -> focusPosterOnMap` |
