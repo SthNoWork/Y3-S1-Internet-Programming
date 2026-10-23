@@ -3,20 +3,10 @@ import { onMounted, onBeforeUnmount, ref, computed } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import icon from 'leaflet/dist/images/marker-icon.png'
-import icon2x from 'leaflet/dist/images/marker-icon-2x.png'
-import shadow from 'leaflet/dist/images/marker-shadow.png'
 
 import { users } from '../data/users'
 import { animals } from '../data/animals'
 import type { User } from '../types'
-
-// Fix default marker icons broken by Vite bundler
-L.Icon.Default.mergeOptions({
-  iconUrl: icon,
-  iconRetinaUrl: icon2x,
-  shadowUrl: shadow,
-})
 
 const router = useRouter()
 const mapContainer = ref<HTMLElement | null>(null)
@@ -31,6 +21,25 @@ const activePosters = computed(() => {
 
 const getAvailableAnimalCount = (userId: number) => {
   return animals.filter((a) => a.userId === userId && a.status === 'available').length
+}
+
+// Custom circular PFP marker icon
+const createCircularPfpIcon = (poster: User) => {
+  return L.divIcon({
+    className: 'pfp-marker-icon-wrapper',
+    html: `
+      <div class="pfp-marker-pin">
+        <div class="pfp-marker-avatar">
+          <img src="${poster.profilePictureUrl}" alt="${poster.name}" />
+        </div>
+        <div class="pfp-marker-badge">🐾</div>
+        <div class="pfp-marker-pointer"></div>
+      </div>
+    `,
+    iconSize: [46, 54],
+    iconAnchor: [23, 54],
+    popupAnchor: [0, -56],
+  })
 }
 
 const focusPosterOnMap = (poster: User) => {
@@ -54,37 +63,43 @@ onMounted(() => {
     maxZoom: 19,
   }).addTo(map)
 
-  // Add marker for each active poster
+  // Add custom circular PFP marker for each active poster
   activePosters.value.forEach((poster) => {
     if (!map) return
     const count = getAvailableAnimalCount(poster.id)
 
     const marker = L.marker([poster.latitude, poster.longitude], {
+      icon: createCircularPfpIcon(poster),
       title: poster.name,
     }).addTo(map)
 
-    // Popup content with shelter details and CTA
+    // Popup content with shelter circular pfp, details, and CTA
     const popupContent = document.createElement('div')
     popupContent.className = 'map-popup-card'
     popupContent.innerHTML = `
-      <div style="font-family: inherit; min-width: 190px;">
-        <div style="font-weight: 700; font-size: 14px; color: #0f172a; margin-bottom: 2px;">
-          ${poster.name}
+      <div style="font-family: inherit; min-width: 200px;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <img src="${poster.profilePictureUrl}" alt="${poster.name}" style="width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid #0284c7; flex-shrink: 0;" />
+          <div>
+            <div style="font-weight: 700; font-size: 14px; color: #0f172a; line-height: 1.2;">
+              ${poster.name}
+            </div>
+            <div style="font-size: 11px; color: #64748b; margin-top: 2px;">
+              📍 ${poster.locationName}
+            </div>
+          </div>
         </div>
-        <div style="font-size: 12px; color: #64748b; margin-bottom: 6px;">
-          📍 ${poster.locationName}
-        </div>
-        <div style="font-size: 12px; font-weight: 600; color: #0284c7; margin-bottom: 6px;">
+        <div style="font-size: 12px; font-weight: 600; color: #0284c7; margin-bottom: 6px; padding: 4px 8px; background: #f0f9ff; border-radius: 6px; display: inline-block;">
           🐾 ${count} animal${count === 1 ? '' : 's'} available
         </div>
-        <div style="font-size: 11px; font-weight: 700; color: #2563eb; padding-top: 4px; border-top: 1px solid #e2e8f0;">
+        <div style="font-size: 11px; font-weight: 700; color: #2563eb; padding-top: 6px; border-top: 1px solid #f1f5f9; cursor: pointer;">
           Click marker to view profile →
         </div>
       </div>
     `
 
     marker.bindPopup(popupContent, {
-      offset: L.point(0, -10),
+      offset: L.point(0, -6),
       closeButton: false,
     })
 
@@ -94,7 +109,7 @@ onMounted(() => {
       activePosterId.value = poster.id
     })
 
-    // Mouse leave event: close popup (unless user stays on it)
+    // Mouse leave event: close popup
     marker.on('mouseout', () => {
       marker.closePopup()
       activePosterId.value = null
@@ -239,6 +254,94 @@ onBeforeUnmount(() => {
   min-height: 580px;
 }
 
+/* Custom circular PFP marker styling */
+:deep(.pfp-marker-icon-wrapper) {
+  background: transparent !important;
+  border: none !important;
+}
+
+:deep(.pfp-marker-pin) {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+
+:deep(.pfp-marker-pin:hover) {
+  transform: scale(1.22);
+  border-color: #0284c7;
+  box-shadow: 0 8px 20px rgba(2, 132, 199, 0.45);
+  z-index: 9999 !important;
+}
+
+:deep(.pfp-marker-avatar) {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+:deep(.pfp-marker-avatar img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+:deep(.pfp-marker-pointer) {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 9px solid #ffffff;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.25));
+}
+
+:deep(.pfp-marker-pin:hover .pfp-marker-pointer) {
+  border-top-color: #0284c7;
+}
+
+:deep(.pfp-marker-badge) {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #0284c7;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+:deep(.leaflet-popup-content-wrapper) {
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  padding: 4px;
+}
+
+:deep(.leaflet-popup-content) {
+  margin: 10px 12px;
+  line-height: 1.4;
+}
+
+/* Sidebar styling */
 .posters-sidebar {
   flex: 1;
   min-width: 300px;
