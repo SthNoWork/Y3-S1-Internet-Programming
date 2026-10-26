@@ -38,6 +38,7 @@ AnimalsView (Page / Route View)
 #### **`AnimalFilters` (Child Component)**
 - **Props**:
   - `tags: Tag[]` — Full list of available tags
+  - `speciesList?: SpeciesOption[]` — Available species options (defaults to `species` from `src/data/species.ts`)
   - `search: string` — Current search text
   - `species: string` — Current species selection
   - `selectedTagId: number | null` — Currently active tag ID
@@ -137,7 +138,7 @@ MapView (Page / Route View)
 
 | Screen | Parent | Child / Element | Props Down | Events Up |
 |---|---|---|---|---|
-| `/animals` | `AnimalsView` | `AnimalFilters` | `tags`, `search`, `species`, `selectedTagId`, `sort` | `update:search`, `update:species`, `update:tag`, `update:sort` |
+| `/animals` | `AnimalsView` | `AnimalFilters` | `tags`, `speciesList` (optional), `search`, `species`, `selectedTagId`, `sort` | `update:search`, `update:species`, `update:tag`, `update:sort` |
 | `/animals` | `AnimalsView` | `AnimalCard` | `animal`, `owner` | *(None)* |
 | `/animals` | `AnimalsView` | `PaginationBar` | `page`, `pageCount` | `change` |
 | `/accounts/:id` | `AccountView` | `AccountHeader` | `account` | *(None)* |
