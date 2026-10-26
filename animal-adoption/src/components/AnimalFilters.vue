@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import type { Tag } from '../types'
+import type { Tag, SpeciesOption } from '../types'
+import { species as defaultSpeciesList } from '../data/species'
 
-const props = defineProps<{
-  tags: Tag[]
-  search: string
-  species: string
-  selectedTagId: number | null
-  sort: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    tags: Tag[]
+    search: string
+    species: string
+    selectedTagId: number | null
+    sort: string
+    speciesList?: SpeciesOption[]
+  }>(),
+  {
+    speciesList: () => defaultSpeciesList,
+  },
+)
 
 const emit = defineEmits<{
   (e: 'update:search', value: string): void
@@ -64,9 +71,9 @@ const onSortChange = (event: Event) => {
           @change="onSpeciesChange"
         >
           <option value="">All Species</option>
-          <option value="dog">Dogs</option>
-          <option value="cat">Cats</option>
-          <option value="other">Other Animals</option>
+          <option v-for="item in props.speciesList" :key="item.id" :value="item.id">
+            {{ item.name }}
+          </option>
         </select>
       </div>
 
@@ -89,12 +96,7 @@ const onSortChange = (event: Event) => {
       <!-- Sort selector -->
       <div class="filter-group">
         <label for="filter-sort" class="filter-label">Sort By</label>
-        <select
-          id="filter-sort"
-          :value="props.sort"
-          class="filter-select"
-          @change="onSortChange"
-        >
+        <select id="filter-sort" :value="props.sort" class="filter-select" @change="onSortChange">
           <option value="newest">Newest First</option>
           <option value="name-asc">Name (A-Z)</option>
           <option value="name-desc">Name (Z-A)</option>
@@ -150,7 +152,9 @@ const onSortChange = (event: Event) => {
   background-color: #f8fafc;
   color: #1e293b;
   outline: none;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
 }
 
 .filter-input:focus,

@@ -1,6 +1,11 @@
 export type Species = 'dog' | 'cat' | 'other'
 export type AnimalStatus = 'available' | 'adopted'
 
+export interface SpeciesOption {
+  id: Species
+  name: string
+}
+
 export interface User {
   id: number
   name: string

@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { animals as initialAnimals } from '../data/animals'
 import { users } from '../data/users'
 import { tags } from '../data/tags'
+import { species as speciesList } from '../data/species'
 import AnimalCard from '../components/AnimalCard.vue'
 import AnimalFilters from '../components/AnimalFilters.vue'
 import PaginationBar from '../components/PaginationBar.vue'
@@ -21,44 +22,46 @@ const getOwner = (userId: number) => {
 
 // Computed: Filter and sort logic
 const filteredAnimals = computed(() => {
-  return initialAnimals.filter((animal) => {
-    // Hide animals belonging to banned users
-    const owner = getOwner(animal.userId)
-    if (owner && owner.banned) {
-      return false
-    }
-
-    // Filter by search query
-    if (search.value.trim() !== '') {
-      const q = search.value.toLowerCase()
-      const matchesName = animal.name.toLowerCase().includes(q)
-      const matchesDetails = animal.details.toLowerCase().includes(q)
-      if (!matchesName && !matchesDetails) {
+  return initialAnimals
+    .filter((animal) => {
+      // Hide animals belonging to banned users
+      const owner = getOwner(animal.userId)
+      if (owner && owner.banned) {
         return false
       }
-    }
 
-    // Filter by species
-    if (species.value && animal.species !== species.value) {
-      return false
-    }
+      // Filter by search query
+      if (search.value.trim() !== '') {
+        const q = search.value.toLowerCase()
+        const matchesName = animal.name.toLowerCase().includes(q)
+        const matchesDetails = animal.details.toLowerCase().includes(q)
+        if (!matchesName && !matchesDetails) {
+          return false
+        }
+      }
 
-    // Filter by tag
-    if (selectedTagId.value !== null && !animal.tagIds.includes(selectedTagId.value)) {
-      return false
-    }
+      // Filter by species
+      if (species.value && animal.species !== species.value) {
+        return false
+      }
 
-    return true
-  }).sort((a, b) => {
-    if (sort.value === 'name-asc') {
-      return a.name.localeCompare(b.name)
-    }
-    if (sort.value === 'name-desc') {
-      return b.name.localeCompare(a.name)
-    }
-    // Default newest
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  })
+      // Filter by tag
+      if (selectedTagId.value !== null && !animal.tagIds.includes(selectedTagId.value)) {
+        return false
+      }
+
+      return true
+    })
+    .sort((a, b) => {
+      if (sort.value === 'name-asc') {
+        return a.name.localeCompare(b.name)
+      }
+      if (sort.value === 'name-desc') {
+        return b.name.localeCompare(a.name)
+      }
+      // Default newest
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    })
 })
 
 const pageCount = computed(() => {
@@ -107,6 +110,7 @@ const onPageChange = (newPage: number) => {
     <!-- AnimalFilters: Props down, events up -->
     <AnimalFilters
       :tags="tags"
+      :species-list="speciesList"
       :search="search"
       :species="species"
       :selected-tag-id="selectedTagId"
@@ -139,11 +143,7 @@ const onPageChange = (newPage: number) => {
     </div>
 
     <!-- Pagination Bar -->
-    <PaginationBar
-      :page="page"
-      :page-count="pageCount"
-      @change="onPageChange"
-    />
+    <PaginationBar :page="page" :page-count="pageCount" @change="onPageChange" />
   </div>
 </template>
 
