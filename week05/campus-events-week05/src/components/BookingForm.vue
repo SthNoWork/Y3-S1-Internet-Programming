@@ -6,13 +6,22 @@ import { hasErrors, validateBooking } from "../validation";
 const props = defineProps<{ seatsLeft: number; pending?: boolean }>();
 const emit = defineEmits<{ submit: [input: BookingInput] }>();
 
-// EventForm.vue is a finished form: use it as your pattern.
 // TODO C2: a reactive `form` object { name: "", email: "", seats: 1 }
 // TODO C3: `submitted` (ref, false) and `errors` (computed with validateBooking)
 // TODO C4: onSubmit(): set submitted; stop if there are errors;
 //          otherwise emit "submit" with the trimmed name and email, and seats
+const form = reactive<BookingInput>({ name: "", email: "", seats: 1 });
+const submitted = ref(false);
+const errors = computed(() => validateBooking(form, props.seatsLeft));
+
 function onSubmit() {
-  void [computed, reactive, ref, hasErrors, validateBooking, props, emit];
+  submitted.value = true;
+  if (hasErrors(errors.value)) return;
+  emit("submit", {
+    name: form.name.trim(),
+    email: form.email.trim(),
+    seats: form.seats
+  });
 }
 </script>
 
@@ -23,20 +32,23 @@ function onSubmit() {
   <form novalidate @submit.prevent="onSubmit">
     <label>
       Name
-      <input name="name" autocomplete="name" />
+      <input name="name" v-model="form.name" autocomplete="name" />
+      <p class="error" v-if="submitted && errors.name">Enter your name (at least 2 characters).</p>
     </label>
 
     <label>
       Email
-      <input name="email" type="email" autocomplete="email" />
+      <input name="email" v-model="form.email" type="email" autocomplete="email" />
+      <p class="error" v-if="submitted && errors.email">Enter a valid email address.</p>
     </label>
 
     <label>
       Seats
-      <input name="seats" type="number" min="1" max="4" />
+      <input name="seats" v-model.number="form.seats" type="number" min="1" max="4" />
+      <p class="error" v-if="submitted && errors.seats">Book at least 1 seat.</p>
     </label>
 
-    <button type="submit">Book</button>
+    <button type="submit" :disabled="submitted || pending">Booking...</button>
   </form>
 </template>
 

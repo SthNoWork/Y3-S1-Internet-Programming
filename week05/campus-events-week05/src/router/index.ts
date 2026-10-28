@@ -16,6 +16,10 @@ export const routes = [
   //   /my-bookings   name "my-bookings"   MyBookingsPage
   //   anything else  name "not-found"     NotFoundPage      path: "/:pathMatch(.*)*"
   // Question: why must "/events/new" come before "/events/:id" if :id had no (\\d+)?
+  { path: "/events/new", name: "event-new", component: () => import("../pages/NewEventPage.vue"), meta: { organiserOnly: true } },
+  { path: "/events/:id(\\d+)", name: "event-detail", component: () => import("../pages/EventDetailPage.vue"), props: true, pathToRegexpOptions: { strict: true } },
+  { path: "/my-bookings", name: "my-bookings", component: () => import("../pages/MyBookingsPage.vue") },
+  { path: "/:pathMatch(.*)*", name: "not-found", component: () => import("../pages/NotFoundPage.vue") }
 ];
 
 export function makeRouter(history: RouterHistory = createWebHistory()) {
@@ -24,7 +28,15 @@ export function makeRouter(history: RouterHistory = createWebHistory()) {
   // TODO A2: a global guard (router.beforeEach).
   // If the route has meta.organiserOnly and the session is not an organiser,
   // redirect to { name: "events", query: { denied: "1" } }.
-  void useSessionStore; // remove this line when you use the store
+  // void useSessionStore; // remove this line when you use the store
+  router.beforeEach((to, from, next) => {
+    const sessionStore = useSessionStore();
+    if (to.meta.organiserOnly && !sessionStore.isOrganiser) {
+      next({ name: "events", query: { denied: "1" } });
+    } else {
+      next();
+    }
+  });
 
   return router;
 }
