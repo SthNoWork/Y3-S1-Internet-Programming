@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
+}
+
+model AnimalStatus {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  animals Animal[]
+}
+
+model ReportStatus {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  reports Report[]
+}
+
+model Species {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  animals Animal[]
+}
+
+model User {
+  id                 Int      @id @default(autoincrement())
+  name               String
+  email              String   @unique
+  passwordHash       String
+  profilePictureUrl  String?
+  phone              String?
+  contactNote        String?
+  locationName       String?
+  latitude           Float?
+  longitude          Float?
+  roleId             Int      @default(1)
+  role               Role     @relation(fields: [roleId], references: [id])
+  banned             Boolean  @default(false)
+  animals            Animal[]
+  reports            Report[]
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Animal {
+  id           Int          @id @default(autoincrement())
+  name         String
+  speciesId    Int
+  species      Species      @relation(fields: [speciesId], references: [id])
+  details      String
+  requirements String
+  imageUrl     String?
+  statusId     Int          @default(1)
+  status       AnimalStatus @relation(fields: [statusId], references: [id])
+  userId       Int
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tags         Tag[]        @relation("AnimalTags")
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model Tag {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  animals Animal[] @relation("AnimalTags")
+}
+
+model Report {
+  id             Int          @id @default(autoincrement())
+  reason         String
+  reportedUserId Int
+  reportedUser   User         @relation(fields: [reportedUserId], references: [id], onDelete: Cascade)
+  statusId       Int          @default(1)
+  status         ReportStatus @relation(fields: [statusId], references: [id])
+  createdAt      DateTime     @default(now())
+}

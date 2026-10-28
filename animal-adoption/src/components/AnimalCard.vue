@@ -2,7 +2,9 @@
 import type { Animal, User } from '../types'
 import { tags } from '../data/tags'
 import { RouterLink } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
 
+const authStore = useAuthStore()
 const props = defineProps<{
   animal: Animal
   owner?: User
@@ -42,6 +44,10 @@ const getTagName = (id: number): string => {
         <span v-for="tagId in props.animal.tagIds" :key="tagId" class="tag-pill">
           #{{ getTagName(tagId) }}
         </span>
+      </div>
+
+      <div v-if="authStore.isLoggedIn && props.animal.userId === authStore.user?.id" class="card-actions">
+        <RouterLink to="/manage-animals" class="manage-link">Manage</RouterLink>
       </div>
 
       <div v-if="props.owner" class="card-footer">

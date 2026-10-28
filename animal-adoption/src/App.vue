@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import { useAuthStore } from './stores/auth'
+
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -15,8 +18,11 @@ import { RouterLink, RouterView } from 'vue-router'
           <RouterLink to="/animals" class="nav-item">Browse Animals</RouterLink>
           <RouterLink to="/map" class="nav-item">Shelter Map</RouterLink>
           <RouterLink to="/accounts/1" class="nav-item">Shelter Profile</RouterLink>
-          <RouterLink to="/accounts/2" class="nav-item test-tag">Test Empty Case</RouterLink>
-          <RouterLink to="/accounts/3" class="nav-item test-tag">Test Banned Case</RouterLink>
+          <RouterLink v-if="!authStore.isLoggedIn" to="/auth" class="nav-item">Login / Create Account</RouterLink>
+          <template v-else>
+            <RouterLink to="/manage-animals" class="nav-item">Manage My Animals</RouterLink>
+            <button type="button" class="nav-item nav-button" @click="authStore.logout">Log Out</button>
+          </template>
         </nav>
       </div>
     </header>
@@ -122,14 +128,11 @@ body {
   background: #e0f2fe;
 }
 
-.nav-item.test-tag {
-  font-size: 12px;
-  color: #64748b;
-  border: 1px dashed #cbd5e1;
-}
-
-.nav-item.test-tag:hover {
-  border-color: #0284c7;
+.nav-button {
+  font-family: inherit;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 .app-main {
