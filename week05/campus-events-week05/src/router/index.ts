@@ -29,12 +29,12 @@ export function makeRouter(history: RouterHistory = createWebHistory()) {
   // If the route has meta.organiserOnly and the session is not an organiser,
   // redirect to { name: "events", query: { denied: "1" } }.
   // void useSessionStore; // remove this line when you use the store
-  router.beforeEach((to, from, next) => {
-    const sessionStore = useSessionStore();
-    if (to.meta.organiserOnly && !sessionStore.isOrganiser) {
-      next({ name: "events", query: { denied: "1" } });
-    } else {
-      next();
+  router.beforeEach((to) => {
+    if (to.meta.organiserOnly) {
+      const sessionStore = useSessionStore();
+      if (!sessionStore.isOrganiser) {
+        return { name: "events", query: { denied: "1" } };
+      }
     }
   });
 
