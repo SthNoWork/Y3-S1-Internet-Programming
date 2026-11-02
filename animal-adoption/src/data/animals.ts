@@ -1,28 +1,28 @@
 // src/data/animals.ts
 import type { Animal, Category, Species } from '@/types/animal'
 
-// 🐕 Species Lookup Table
-export const mockSpecies: Species[] = [
-  { id: 1, name: 'Dog' },
-  { id: 2, name: 'Cat' },
-  { id: 3, name: 'Rabbit' },
-  { id: 4, name: 'Bird' },
-]
+// Lookup dictionary for animal species by ID
+export const SPECIES_BY_ID: Record<number, string> = {
+  1: 'Dog',
+  2: 'Cat',
+  3: 'Rabbit',
+  4: 'Bird',
+};
 
-// 🏷️ Category / Trait Lookup Table
-export const mockCategories: Category[] = [
-  { id: 1, name: 'Active' },
-  { id: 2, name: 'House-trained' },
-  { id: 3, name: 'Calm' },
-  { id: 4, name: 'Good with Kids' },
-  { id: 5, name: 'Hypoallergenic' },
-  { id: 6, name: 'Needs Yard' },
-  { id: 7, name: 'Indoor Only' },
-  { id: 8, name: 'Special Diet' },
-]
+// Lookup dictionary for traits/categories by ID
+export const CATEGORY_NAMES_BY_ID: Record<number, string> = {
+  1: 'Active',
+  2: 'House-trained',
+  3: 'Calm',
+  4: 'Good with Kids',
+  5: 'Hypoallergenic',
+  6: 'Needs Yard',
+  7: 'Indoor Only',
+  8: 'Special Diet',
+};
 
 // 🐾 Mock Animals Dataset
-export const animals: Animal[] = [
+export const ANIMALS: Animal[] = [
   {
     id: 1,
     name: 'Bella',

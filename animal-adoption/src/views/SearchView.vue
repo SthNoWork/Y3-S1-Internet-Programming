@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import SearchBar from '@/components/SearchBar.vue';
 import AnimalCard from '@/components/AnimalCard.vue';
-import { animals } from '@/data/animals';
+import { ANIMALS } from '@/data/animals';
 
 </script>
 
@@ -9,7 +9,7 @@ import { animals } from '@/data/animals';
   <div class="search-page">
     <h2>Welcome to search page</h2>
     <SearchBar />
-    <AnimalCard v-for="animal in animals" :key="animal.id" :animal="animal"> </AnimalCard>
+    <AnimalCard v-for="animal in ANIMALS" :key="animal.id" :animal="animal"> </AnimalCard>
   </div>
 </template>
 
