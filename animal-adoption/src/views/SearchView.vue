@@ -9,8 +9,11 @@ import { ANIMALS } from '@/data/animals';
   <div class="search-page">
     <h2>Welcome to search page</h2>
     <SearchBar />
-    <AnimalCard v-for="animal in ANIMALS" :key="animal.id" :animal="animal"> </AnimalCard>
+    <div class="animal-grid">
+      <AnimalCard v-for="animal in ANIMALS" :key="animal.id" :animal="animal"> </AnimalCard>
+    </div>
   </div>
+
 </template>
 
 <style scoped>
@@ -22,5 +25,11 @@ import { ANIMALS } from '@/data/animals';
 
 h2 {
   align-self: center;
+}
+
+.animal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
 }
 </style>
