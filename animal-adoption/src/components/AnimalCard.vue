@@ -35,13 +35,37 @@ defineProps<{
         <span v-for="id in animal.categoryIds" :key="id" class="category-badge">{{ CATEGORY_NAMES_BY_ID[id] }}</span>
       </div>
 
-      <RouterLink to="/account">Go to Shelter</RouterLink>
+      <RouterLink to="/account" class="routerlink">Go to Shelter</RouterLink>
     </div>
   </div>
 </template>
 
 <style scoped>
+.animal-card {
+  border-radius: 5%;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+}
+
 .category-badge {
   padding: 0rem 1rem
+}
+
+.card-content {
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+}
+
+.thumbnail {
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.routerlink {
+  align-self: flex-end;
 }
 </style>

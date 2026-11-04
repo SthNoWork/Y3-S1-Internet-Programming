@@ -2,15 +2,26 @@
 import SearchBar from '@/components/SearchBar.vue';
 import AnimalCard from '@/components/AnimalCard.vue';
 import { ANIMALS } from '@/data/animals';
+import { computed, ref } from 'vue'
 
+const searchQuery = ref('')
+
+const filteredAnimals = computed(() => {
+  return ANIMALS.filter((x) => {
+    return x.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+  })
+})
 </script>
 
 <template>
   <div class="search-page">
     <h2>Welcome to search page</h2>
-    <SearchBar />
-    <AnimalCard v-for="animal in ANIMALS" :key="animal.id" :animal="animal"> </AnimalCard>
+    <SearchBar v-model="searchQuery" />
+    <div class="animal-grid">
+      <AnimalCard v-for="animal in filteredAnimals" :key="animal.id" :animal="animal"> </AnimalCard>
+    </div>
   </div>
+
 </template>
 
 <style scoped>
@@ -22,5 +33,11 @@ import { ANIMALS } from '@/data/animals';
 
 h2 {
   align-self: center;
+}
+
+.animal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
 }
 </style>
