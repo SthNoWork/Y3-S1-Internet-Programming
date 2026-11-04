@@ -18,7 +18,7 @@ const filteredAnimals = computed(() => {
     <h2>Welcome to search page</h2>
     <SearchBar v-model="searchQuery" />
     <div class="animal-grid">
-      <AnimalCard v-for="animal in filteredAnimals" :key="animal.id" :animal="animal"> </AnimalCard>
+      <AnimalCard v-for="x in filteredAnimals" :key="x.id" :animal="x"> </AnimalCard>
     </div>
   </div>
 
@@ -29,6 +29,11 @@ const filteredAnimals = computed(() => {
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  width: 100%;
+  max-width: 1200px;
+  /* 📏 Matches the account page width */
+  margin: 0 auto;
+  /* 🎯 Centers the whole container on wide screens */
 }
 
 h2 {

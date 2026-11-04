@@ -1,10 +1,11 @@
 import type { Account } from '@/types/account'
 
-export const ACCOUNTS: Account[] = [
-  {
-    id: 1,
+export const ACCOUNTS: Record<number, Account> = {
+  1: {
     name: 'Happy Paws Rescue',
-    description: 'A non-profit rescue committed to rehabilitating and rehoming stray dogs and cats.',
+    description:
+      'A non-profit rescue committed to rehabilitating and rehoming stray dogs and cats.',
+    profileImageUrl: 'https://images.unsplash.com/photo-1534361960057-19889db9621e?w=200',
     coverImageUrl: 'https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=600',
     email: 'contact@happypaws.org',
     phone: '(415) 555-0142',
@@ -14,10 +15,11 @@ export const ACCOUNTS: Account[] = [
     longitude: -122.4194,
     banned: false,
   },
-  {
-    id: 2,
+  2: {
     name: 'Bay Area Pet Haven',
-    description: 'Providing safe shelter, medical treatment, and loving homes for abandoned animals.',
+    description:
+      'Providing safe shelter, medical treatment, and loving homes for abandoned animals.',
+    profileImageUrl: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=200',
     coverImageUrl: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=600',
     email: 'info@bayareapethaven.org',
     phone: '(510) 555-0189',
@@ -27,10 +29,10 @@ export const ACCOUNTS: Account[] = [
     longitude: -122.2712,
     banned: false,
   },
-  {
-    id: 3,
+  3: {
     name: 'Sunset Critter Sanctuary',
     description: 'Focused on special-needs and senior pets who need gentle, patient homes.',
+    profileImageUrl: 'https://images.unsplash.com/photo-1560743641-3914f4c4b88c?w=200',
     coverImageUrl: 'https://images.unsplash.com/photo-1574158622682-e40e69881006?w=600',
     email: 'adopt@sunsetcritters.org',
     phone: '(415) 555-0177',
@@ -40,10 +42,10 @@ export const ACCOUNTS: Account[] = [
     longitude: -122.4842,
     banned: false,
   },
-  {
-    id: 4,
+  4: {
     name: 'East Bay Feline Foundation',
     description: 'Dedicated to community cat welfare, foster placement, and kitten adoptions.',
+    profileImageUrl: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=200',
     coverImageUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600',
     email: 'help@eastbaycats.org',
     phone: '(510) 555-0123',
@@ -53,10 +55,10 @@ export const ACCOUNTS: Account[] = [
     longitude: -122.273,
     banned: false,
   },
-  {
-    id: 5,
+  5: {
     name: 'Alex Rivera',
     description: 'Independent poster looking for a good home for an unexpected litter.',
+    profileImageUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200',
     coverImageUrl: 'https://placehold.co/600x400?text=No+Cover+Image',
     email: 'alex.rivera@example.com',
     phone: '(408) 555-0199',
@@ -65,4 +67,4 @@ export const ACCOUNTS: Account[] = [
     longitude: -121.8863,
     banned: false,
   },
-]
+}

@@ -35,7 +35,9 @@
 - `src/views/ManageView.vue` - Poster dashboard for submitting and managing animals with client-side validation.
 - `src/router/index.ts` - Route definitions (`/home`, `/search`, `/map`, `/accounts/:id`, `/manage`).
 - `src/types/animal.ts` - Data types for `Animal`, `User`/`Account`, `Tag`, `Species`.
+- `src/types/account.ts` - Interface for `Account` (`profileImageUrl`, `coverImageUrl`, contact/location info).
 - `src/data/animals.ts` - Mock data fixtures for animals and species lookups.
+- `src/data/accounts.ts` - Mock `ACCOUNTS` map fixtures.
 - `PROPOSAL.md` - System requirements, user stories, MVP scope, and entity relationships.
 - `goal.md` - 7-day study guide and milestone checklist for Frontend Prototype (M1).
 

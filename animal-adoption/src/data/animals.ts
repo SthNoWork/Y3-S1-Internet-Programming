@@ -33,7 +33,8 @@ export const ANIMALS: Animal[] = [
     status: 'available',
     description: 'A cheerful Golden Retriever mix who loves fetch and belly rubs.',
     requirement: 'Thrives in a home with a fenced yard and daily outdoor exercise.',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1552053831-71594a27632d?w=600&auto=format&fit=crop&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1552053831-71594a27632d?w=600&auto=format&fit=crop&q=80',
     imageUrls: [
       'https://images.unsplash.com/photo-1552053831-71594a27632d?w=1000&auto=format&fit=crop&q=80',
     ],
@@ -51,7 +52,8 @@ export const ANIMALS: Animal[] = [
     status: 'available',
     description: 'Curious ginger tabby kitten who enjoys sunbeams and feather wands.',
     requirement: 'Best suited as an indoor cat; loves gentle handling.',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&auto=format&fit=crop&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600&auto=format&fit=crop&q=80',
     imageUrls: [
       'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=1000&auto=format&fit=crop&q=80',
     ],
@@ -69,7 +71,8 @@ export const ANIMALS: Animal[] = [
     status: 'pending',
     description: 'Gentle German Shepherd who is exceptionally loyal and well-mannered.',
     requirement: 'Experienced dog owner preferred; enjoys quiet, predictable environments.',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?w=600&auto=format&fit=crop&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?w=600&auto=format&fit=crop&q=80',
     imageUrls: [
       'https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?w=1000&auto=format&fit=crop&q=80',
     ],
@@ -87,7 +90,8 @@ export const ANIMALS: Animal[] = [
     status: 'available',
     description: 'A calm Holland Lop rabbit with soft fur and an affectionate temperament.',
     requirement: 'Requires a spacious indoor pen and unlimited timothy hay.',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=600&auto=format&fit=crop&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=600&auto=format&fit=crop&q=80',
     imageUrls: [
       'https://images.unsplash.com/photo-1585110396000-c9ffd4e4b308?w=1000&auto=format&fit=crop&q=80',
     ],
@@ -105,7 +109,8 @@ export const ANIMALS: Animal[] = [
     status: 'available',
     description: 'Polite British Shorthair with a plush gray coat and independent vibe.',
     requirement: 'Prefers calm adults; great companion for people working from home.',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=600&auto=format&fit=crop&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=600&auto=format&fit=crop&q=80',
     imageUrls: [
       'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=1000&auto=format&fit=crop&q=80',
     ],
@@ -123,7 +128,8 @@ export const ANIMALS: Animal[] = [
     status: 'available',
     description: 'Playful Beagle mix with an outstanding nose and an appetite for adventure.',
     requirement: 'Needs secure fencing because she loves to follow scent trails.',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=600&auto=format&fit=crop&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=600&auto=format&fit=crop&q=80',
     imageUrls: [
       'https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?w=1000&auto=format&fit=crop&q=80',
     ],
@@ -141,7 +147,8 @@ export const ANIMALS: Animal[] = [
     status: 'adopted',
     description: 'Sleek black cat who loves perching on top of tall cat trees.',
     requirement: 'Requires a sensitive-stomach food formula.',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=600&auto=format&fit=crop&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=600&auto=format&fit=crop&q=80',
     imageUrls: [
       'https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=1000&auto=format&fit=crop&q=80',
     ],
@@ -159,7 +166,8 @@ export const ANIMALS: Animal[] = [
     status: 'available',
     description: 'Vibrant green parakeet who whistles cheerful tunes in the morning.',
     requirement: 'Cage kept away from kitchen fumes; daily out-of-cage flight time.',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=600&auto=format&fit=crop&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=600&auto=format&fit=crop&q=80',
     imageUrls: [
       'https://images.unsplash.com/photo-1552728089-57bdde30beb3?w=1000&auto=format&fit=crop&q=80',
     ],
@@ -177,7 +185,8 @@ export const ANIMALS: Animal[] = [
     status: 'available',
     description: 'Athletic Boxer mix with boundless energy and a heart of gold.',
     requirement: 'Best in an active household; loves hiking and running buddies.',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600&auto=format&fit=crop&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600&auto=format&fit=crop&q=80',
     imageUrls: [
       'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=1000&auto=format&fit=crop&q=80',
     ],
@@ -195,7 +204,8 @@ export const ANIMALS: Animal[] = [
     status: 'available',
     description: 'Affectionate senior Persian mix who wants nothing more than a warm lap.',
     requirement: 'Daily brushing needed to keep her long coat tangle-free.',
-    thumbnailUrl: 'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=600&auto=format&fit=crop&q=80',
+    thumbnailUrl:
+      'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=600&auto=format&fit=crop&q=80',
     imageUrls: [
       'https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=1000&auto=format&fit=crop&q=80',
     ],

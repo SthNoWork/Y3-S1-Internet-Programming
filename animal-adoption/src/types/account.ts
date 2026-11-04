@@ -1,7 +1,7 @@
 export interface Account {
-  id: number
   name: string
   description: string
+  profileImageUrl: string
   coverImageUrl: string
   email: string
   phone: string

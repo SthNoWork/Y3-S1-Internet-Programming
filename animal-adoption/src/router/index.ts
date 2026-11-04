@@ -26,7 +26,7 @@ const router = createRouter({
       component: MapView
     },
     {
-      path: '/account',
+      path: '/account/:id',
       component: AccountView
     },
     {

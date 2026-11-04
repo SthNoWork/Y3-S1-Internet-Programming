@@ -35,7 +35,7 @@ defineProps<{
         <span v-for="id in animal.categoryIds" :key="id" class="category-badge">{{ CATEGORY_NAMES_BY_ID[id] }}</span>
       </div>
 
-      <RouterLink to="/account" class="routerlink">Go to Shelter</RouterLink>
+      <RouterLink :to="`/account/${animal.accountId}`" class="routerlink">Go to Shelter</RouterLink>
     </div>
   </div>
 </template>
