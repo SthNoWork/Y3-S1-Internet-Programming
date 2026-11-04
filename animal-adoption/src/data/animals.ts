@@ -7,7 +7,7 @@ export const SPECIES_BY_ID: Record<number, string> = {
   2: 'Cat',
   3: 'Rabbit',
   4: 'Bird',
-};
+}
 
 // Lookup dictionary for traits/categories by ID
 export const CATEGORY_NAMES_BY_ID: Record<number, string> = {
@@ -19,12 +19,13 @@ export const CATEGORY_NAMES_BY_ID: Record<number, string> = {
   6: 'Needs Yard',
   7: 'Indoor Only',
   8: 'Special Diet',
-};
+}
 
 // 🐾 Mock Animals Dataset
 export const ANIMALS: Animal[] = [
   {
     id: 1,
+    accountId: 1,
     name: 'Bella',
     age: 3,
     gender: 'female',
@@ -42,6 +43,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     id: 2,
+    accountId: 2,
     name: 'Milo',
     age: 1,
     gender: 'male',
@@ -59,6 +61,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     id: 3,
+    accountId: 1,
     name: 'Luna',
     age: 5,
     gender: 'female',
@@ -76,6 +79,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     id: 4,
+    accountId: 3,
     name: 'Barnaby',
     age: 2,
     gender: 'male',
@@ -93,6 +97,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     id: 5,
+    accountId: 2,
     name: 'Oliver',
     age: 4,
     gender: 'male',
@@ -110,6 +115,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     id: 6,
+    accountId: 1,
     name: 'Daisy',
     age: 2,
     gender: 'female',
@@ -127,6 +133,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     id: 7,
+    accountId: 4,
     name: 'Shadow',
     age: 6,
     gender: 'male',
@@ -144,6 +151,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     id: 8,
+    accountId: 3,
     name: 'Kiwi',
     age: 1,
     gender: 'female',
@@ -161,6 +169,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     id: 9,
+    accountId: 4,
     name: 'Rocky',
     age: 4,
     gender: 'male',
@@ -178,6 +187,7 @@ export const ANIMALS: Animal[] = [
   },
   {
     id: 10,
+    accountId: 5,
     name: 'Chloe',
     age: 7,
     gender: 'female',

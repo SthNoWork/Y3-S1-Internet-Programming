@@ -1,19 +1,10 @@
-export interface Category {
-  id: number
-  name: string
-}
-
-export interface Species {
-  id: number
-  name: string
-}
-
 export interface Animal {
   id: number
+  accountId: number
   name: string
   age: number
   gender: 'male' | 'female'
-  speciesId : number
+  speciesId: number
   status: 'available' | 'pending' | 'adopted'
   description: string
   requirement: string
