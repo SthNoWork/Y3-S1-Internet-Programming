@@ -1,5 +1,5 @@
 // src/data/animals.ts
-import type { Animal, Category, Species } from '@/types/animal'
+import type { Animal } from '@/types/animal'
 
 // Lookup dictionary for animal species by ID
 export const SPECIES_BY_ID: Record<number, string> = {
