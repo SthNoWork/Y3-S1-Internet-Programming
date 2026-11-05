@@ -38,8 +38,10 @@
 - `src/types/account.ts` - Interface for `Account` (`profileImageUrl`, `coverImageUrl`, contact/location info).
 - `src/data/animals.ts` - Mock data fixtures for animals and species lookups.
 - `src/data/accounts.ts` - Mock `ACCOUNTS` map fixtures.
-- `PROPOSAL.md` - System requirements, user stories, MVP scope, and entity relationships.
-- `goal.md` - 7-day study guide and milestone checklist for Frontend Prototype (M1).
+- `MD/PROPOSAL.md` - System requirements, user stories, MVP scope, and entity relationships.
+- `MD/goal.md` - 7-day study guide and milestone checklist for Frontend Prototype (M1).
+- `src/services/adoptionService.ts` - Mock async API service (`getAnimals`, `getAccountById`).
+- `src/stores/adoptionStore.ts` - Pinia adoption store (`animals`, `account`, `loading`, `error`, `loadAnimals`, `loadAccount`).
 
 ## Symbol Index
 - `Animal` (`src/types/animal.ts#L10-L24`) - Entity interface (id, name, speciesId, age, gender, description, requirement, categoryIds, thumbnailUrl, userId)

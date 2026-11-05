@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import SearchBar from '@/components/SearchBar.vue';
 import AnimalCard from '@/components/AnimalCard.vue';
-import { ANIMALS } from '@/data/animals';
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
+import { useAdoptionStore } from '@/stores/adoptionStore'
 
 const searchQuery = ref('')
+const store = useAdoptionStore()
+
+onMounted(() => {
+  store.loadAnimals()
+})
+
 
 const filteredAnimals = computed(() => {
-  return ANIMALS.filter((x) => {
+  return store.animals.filter((x) => {
     return x.name.toLowerCase().includes(searchQuery.value.toLowerCase())
   })
 })
@@ -17,7 +23,23 @@ const filteredAnimals = computed(() => {
   <div class="search-page">
     <h2>Welcome to search page</h2>
     <SearchBar v-model="searchQuery" />
-    <div class="animal-grid">
+
+    <div v-if="store.loading">
+      <p>Loading animals from shelter...</p>
+    </div>
+
+    <div v-if="store.error">
+      <p>{{ store.error }}</p>
+      <button @click="store.loadAnimals()">Try Again</button>
+    </div>
+
+    <div v-else-if="filteredAnimals.length === 0">
+      <p>
+        No animals matches your search!
+      </p>
+    </div>
+
+    <div v-else class="animal-grid">
       <AnimalCard v-for="x in filteredAnimals" :key="x.id" :animal="x"> </AnimalCard>
     </div>
   </div>

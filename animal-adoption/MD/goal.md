@@ -12,8 +12,8 @@
 - [ ] **Vue 3 + TypeScript** app created with Vite; strict mode on; ESLint passes (`npm run lint`)
 - [ ] **At least 4 routes**, including a detail page with a route parameter (`/accounts/:id`)
 - [ ] **At least one form** with client-side validation (in `ManageView.vue`)
-- [ ] **A Pinia store & service layer** calling a mock API (simulated latency + error handling)
-- [ ] **Loading, empty and error states** visible in the UI
+- [x] **A Pinia store & service layer** calling a mock API (simulated latency + error handling)
+- [x] **Loading, empty and error states** visible in the UI
 - [ ] **Concept Explanation:** What state lives in the store and what stays inside a component? Why?
 
 ---
@@ -165,7 +165,7 @@ export const adoptionService = {
 ```
 
 #### 4. Day 3 Done Checklist
-- [ ] `src/services/adoptionService.ts` created and exports typed async functions.
+- [x] `src/services/adoptionService.ts` created and exports typed async functions.
 - [ ] `npx vue-tsc --noEmit` passes without type errors.
 
 ---
@@ -234,8 +234,8 @@ export const useAdoptionStore = defineStore('adoption', () => {
 ```
 
 #### 4. Day 4 Done Checklist
-- [ ] Pinia store handles `loading`, `error`, and `animals` states.
-- [ ] Store actions call the service layer instead of importing data directly.
+- [x] Pinia store handles `loading`, `error`, and `animals` states.
+- [x] Store actions call the service layer instead of importing data directly.
 
 ---
 
@@ -302,9 +302,9 @@ onMounted(() => {
 ```
 
 #### 4. Day 5 Done Checklist
-- [ ] Loading state appears when fetching data.
-- [ ] Empty state renders when the array is empty.
-- [ ] Error banner displays on rejection with a functioning retry mechanism.
+- [x] Loading state appears when fetching data.
+- [x] Empty state renders when the array is empty.
+- [x] Error banner displays on rejection with a functioning retry mechanism.
 
 ---
 

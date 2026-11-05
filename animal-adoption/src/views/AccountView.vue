@@ -1,32 +1,50 @@
 <script setup lang="ts">
 import AnimalCard from '@/components/AnimalCard.vue';
-import { ACCOUNTS } from '@/data/accounts';
-import { ANIMALS } from '@/data/animals';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useAdoptionStore } from '@/stores/adoptionStore';
 
+const store = useAdoptionStore()
 const route = useRoute();
-const account = computed(() =>
-  ACCOUNTS[Number(route.params.id)]
-)
+
+const accountId = Number(route.params.id)
+onMounted(() => {
+  store.loadAccount(accountId)
+  store.loadAnimals()
+})
+
+const animalsInAccount = computed(() => {
+  return store.animals.filter((x) => x.accountId === accountId)
+})
 </script>
 
 <template>
-  <div class="account-page">
-    <img :src="account?.coverImageUrl" class="coverImage">
+  <div v-if="store.loading">
+    <p>Loading account</p>
+  </div>
+
+  <div v-else-if="store.error">
+    <p>{{ store.error }}</p>
+  </div>
+
+  <div v-else class="account-page">
+    <img :src="store.account?.coverImageUrl" class="coverImage">
 
     <div class="profileflexbox">
-      <img :src="account?.profileImageUrl">
+      <img :src="store.account?.profileImageUrl">
       <div class="profileInformation">
-        <h2>{{ account?.name }}</h2>
-        <p>{{ account?.phone }}</p>
+        <h2>{{ store.account?.name }}</h2>
+        <p>{{ store.account?.phone }}</p>
         <a>Location Button</a>
-        <p>{{ account?.description }}</p>
-        <p><b>Notes: </b>{{ account?.notes }}</p>
+        <p>{{ store.account?.description }}</p>
+        <p><b>Notes: </b>{{ store.account?.notes }}</p>
       </div>
     </div>
     <div class="animal-grid">
-      <AnimalCard v-for="x in ANIMALS.filter((x) => x.accountId === Number(route.params.id))" :key="x.id" :animal="x">
+      <div v-if="animalsInAccount.length === 0">
+        <p>This Shelter has no animals</p>
+      </div>
+      <AnimalCard v-else v-for="x in animalsInAccount" :key="x.id" :animal="x">
       </AnimalCard>
     </div>
   </div>
