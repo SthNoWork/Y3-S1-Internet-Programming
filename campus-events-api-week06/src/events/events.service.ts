@@ -34,17 +34,29 @@ export class EventsService {
   // TODO B1: create(dto): give the event the next id, booked 0, description '' unless sent;
   // add it to the list and return it.
   create(dto: CreateEventDto): CampusEvent {
-    void this.nextId;
-    throw new Error(`TODO B1: create ${dto.title}`);
+    const event: CampusEvent = {
+      ...dto,
+      id: this.nextId++,
+      booked: 0,
+      description: dto.description ?? '',
+    };
+    this.events.push(event);
+    return event;
   }
 
   // TODO B2: update(id, dto): find the event (404 if missing), copy the fields that were sent, return it.
   update(id: number, dto: UpdateEventDto): CampusEvent {
-    throw new Error(`TODO B2: update ${id} ${JSON.stringify(dto)}`);
+    const event = this.findOne(id);
+    Object.assign(event, dto);
+    return event;
   }
 
   // TODO B3: remove(id): 404 if missing, otherwise remove it from the list.
   remove(id: number): void {
-    throw new Error(`TODO B3: remove ${id}`);
+    const index = this.events.findIndex((e) => e.id === id);
+    if (index === -1) {
+      throw new NotFoundException(`Event ${id} not found`);
+    }
+    this.events.splice(index, 1);
   }
 }

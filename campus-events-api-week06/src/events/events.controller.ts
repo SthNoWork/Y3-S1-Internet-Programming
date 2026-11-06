@@ -35,6 +35,19 @@ export class EventsController {
   //   PATCH  /events/:id   body: UpdateEventDto      -> 200 and the updated event
   //   DELETE /events/:id                             -> 204 and no body (@HttpCode(204))
   // Use ParseIntPipe on :id, like findOne above.
-}
+  @Post()
+  create(@Body() dto: CreateEventDto) {
+    return this.events.create(dto);
+  }
 
-void [Body, Delete, HttpCode, Patch, Post, CreateEventDto, UpdateEventDto];
+  @Patch(':id')
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateEventDto) {
+    return this.events.update(id, dto);
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  remove(@Param('id', ParseIntPipe) id: number) {
+    this.events.remove(id);
+  }
+}

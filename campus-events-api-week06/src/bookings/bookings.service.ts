@@ -21,13 +21,32 @@ export class BookingsService {
   //      with a message such as "Only 3 seat(s) left"
   //   3. increase event.booked, store a new Booking with the next id and createdAt = now, return it
   create(eventId: number, dto: CreateBookingDto): Booking {
-    void [ConflictException, this.events, this.nextId];
-    throw new Error(`TODO C2: book ${dto.seats} seats on ${eventId}`);
+    const event = this.events.findOne(eventId);
+    const seatsLeft = event.capacity - event.booked;
+    if (dto.seats > seatsLeft) {
+      throw new ConflictException(`Only ${seatsLeft} seat(s) left`);
+    }
+    event.booked += dto.seats;
+    const booking: Booking = {
+      id: this.nextId++,
+      eventId,
+      name: dto.name,
+      email: dto.email,
+      seats: dto.seats,
+      createdAt: new Date().toISOString(),
+    };
+    this.bookings.push(booking);
+    return booking;
   }
 
   // TODO C3: remove(id): 404 if the booking does not exist; give its seats back to the event; delete it.
   remove(id: number): void {
-    void NotFoundException;
-    throw new Error(`TODO C3: cancel ${id}`);
+    const index = this.bookings.findIndex((b) => b.id === id);
+    if (index === -1) {
+      throw new NotFoundException(`Booking ${id} not found`);
+    }
+    const [booking] = this.bookings.splice(index, 1);
+    const event = this.events.findOne(booking.eventId);
+    event.booked -= booking.seats;
   }
 }
