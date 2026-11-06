@@ -8,6 +8,8 @@ export const useAdoptionStore = defineStore(`adoption`, () => {
   const animals = ref<Animal[]>([])
   const account = ref<Account | null>(null)
   const currentAccountId = ref<number | null>(null)
+
+  const LOGGED_IN_ACCOUNT_ID = ref<number | null>(1)
   const loading = ref(false)
   const error = ref<string | null>(null)
 
@@ -47,5 +49,5 @@ export const useAdoptionStore = defineStore(`adoption`, () => {
       loading.value = false
     }
   }
-  return { animals, account, loading, error, loadAnimals, loadAccount }
+  return { animals, account, LOGGED_IN_ACCOUNT_ID, loading, error, loadAnimals, loadAccount }
 })

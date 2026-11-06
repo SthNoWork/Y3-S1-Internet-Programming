@@ -8,7 +8,7 @@ import NavHeader from './components/NavHeader.vue';
   <div class="page-layout">
     <NavHeader />
     <main class="main-content">
-      <RouterView />
+      <RouterView :key="$route.fullPath" />
     </main>
   </div>
 </template>

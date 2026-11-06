@@ -11,27 +11,27 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/home'
+      redirect: '/home',
     },
     {
       path: '/home',
-      component: HomeView
+      component: HomeView,
     },
     {
       path: '/search',
-      component: SearchView
+      component: SearchView,
     },
     {
       path: '/map',
-      component: MapView
+      component: MapView,
     },
     {
-      path: '/account/:id',
-      component: AccountView
+      path: '/account/:id?',
+      component: AccountView,
     },
     {
       path: '/manage',
-      component: ManageView
+      component: ManageView,
     },
   ],
 })

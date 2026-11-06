@@ -7,14 +7,28 @@ import { useAdoptionStore } from '@/stores/adoptionStore';
 const store = useAdoptionStore()
 const route = useRoute();
 
-const accountId = Number(route.params.id)
+
+const accountId = computed<number | null>(() => {
+  if (route.params.id) {
+    return Number(route.params.id)
+  }
+
+  if (store.LOGGED_IN_ACCOUNT_ID) {
+    return store.LOGGED_IN_ACCOUNT_ID
+  }
+
+  return null
+})
+
 onMounted(() => {
-  store.loadAccount(accountId)
+  if (accountId.value) {
+    store.loadAccount(accountId.value)
+  }
   store.loadAnimals()
 })
 
 const animalsInAccount = computed(() => {
-  return store.animals.filter((x) => x.accountId === accountId)
+  return store.animals.filter((x) => x.accountId === accountId.value)
 })
 </script>
 

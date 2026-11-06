@@ -1,10 +1,26 @@
 <script setup lang="ts">
 import { CATEGORY_NAMES_BY_ID, SPECIES_BY_ID } from '@/data/animals';
+import { useAdoptionStore } from '@/stores/adoptionStore';
 import type { Animal } from '@/types/animal';
+import { computed } from 'vue';
 
-defineProps<{
+const props = defineProps<{
   animal: Animal
 }>()
+
+const store = useAdoptionStore()
+
+const isMyShelter = computed(() => {
+  return props.animal.accountId === store.LOGGED_IN_ACCOUNT_ID
+})
+
+const accountUrl = computed(() => {
+  return isMyShelter.value ?
+    `account/` :
+    `account/${props.animal.accountId}`
+
+})
+
 </script>
 <template>
   <div class="animal-card">
@@ -35,7 +51,7 @@ defineProps<{
         <span v-for="id in animal.categoryIds" :key="id" class="category-badge">{{ CATEGORY_NAMES_BY_ID[id] }}</span>
       </div>
 
-      <RouterLink :to="`/account/${animal.accountId}`" class="routerlink">Go to Shelter</RouterLink>
+      <RouterLink :to="accountUrl" class="routerlink">{{ isMyShelter ? `My Shelter` : `Go to Shelter` }}</RouterLink>
     </div>
   </div>
 </template>
