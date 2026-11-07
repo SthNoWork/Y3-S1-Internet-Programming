@@ -9,7 +9,7 @@ export const useAdoptionStore = defineStore(`adoption`, () => {
   const account = ref<Account | null>(null)
   const currentAccountId = ref<number | null>(null)
 
-  const LOGGED_IN_ACCOUNT_ID = ref<number | null>(1)
+  const LOGGED_IN_ACCOUNT_ID = ref<number | null>(null)
   const loading = ref(false)
   const error = ref<string | null>(null)
 

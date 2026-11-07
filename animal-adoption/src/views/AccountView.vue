@@ -3,6 +3,7 @@ import AnimalCard from '@/components/AnimalCard.vue';
 import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAdoptionStore } from '@/stores/adoptionStore';
+import router from '@/router';
 
 const store = useAdoptionStore()
 const route = useRoute();
@@ -23,8 +24,10 @@ const accountId = computed<number | null>(() => {
 onMounted(() => {
   if (accountId.value) {
     store.loadAccount(accountId.value)
+    store.loadAnimals()
+  } else {
+    router.push(`/signup`)
   }
-  store.loadAnimals()
 })
 
 const animalsInAccount = computed(() => {
@@ -33,36 +36,42 @@ const animalsInAccount = computed(() => {
 </script>
 
 <template>
-  <div v-if="store.loading">
-    <p>Loading account</p>
-  </div>
+  <main class="account-page">
+    <div v-if="store.loading">
+      <p>Loading account</p>
+    </div>
 
-  <div v-else-if="store.error">
-    <p>{{ store.error }}</p>
-  </div>
+    <div v-else-if="store.error">
+      <p>{{ store.error }}</p>
+    </div>
 
-  <div v-else class="account-page">
-    <img :src="store.account?.coverImageUrl" class="coverImage">
+    <div v-else-if="store.account">
+      <img :src="store.account?.coverImageUrl" class="coverImage">
 
-    <div class="profileflexbox">
-      <img :src="store.account?.profileImageUrl">
-      <div class="profileInformation">
-        <h2>{{ store.account?.name }}</h2>
-        <p>{{ store.account?.phone }}</p>
-        <a>Location Button</a>
-        <p>{{ store.account?.description }}</p>
-        <p><b>Notes: </b>{{ store.account?.notes }}</p>
+      <div class="profileflexbox">
+        <img :src="store.account?.profileImageUrl">
+        <div class="profileInformation">
+          <h2>{{ store.account?.name }}</h2>
+          <p>{{ store.account?.phone }}</p>
+          <a>Location</a>
+          <p>{{ store.account?.description }}</p>
+          <p><b>Notes: </b>{{ store.account?.notes }}</p>
+        </div>
+      </div>
+      <div class="animal-grid">
+        <div v-if="animalsInAccount.length === 0">
+          <p>This Shelter has no animals</p>
+        </div>
+        <AnimalCard v-else v-for="x in animalsInAccount" :key="x.id" :animal="x">
+        </AnimalCard>
       </div>
     </div>
-    <div class="animal-grid">
-      <div v-if="animalsInAccount.length === 0">
-        <p>This Shelter has no animals</p>
-      </div>
-      <AnimalCard v-else v-for="x in animalsInAccount" :key="x.id" :animal="x">
-      </AnimalCard>
-    </div>
-  </div>
 
+    <div v-else>
+      <h1>No Account found!</h1>
+    </div>
+
+  </main>
 
 </template>
 

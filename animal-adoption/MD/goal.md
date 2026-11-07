@@ -1,7 +1,7 @@
 # 7-Day Study Guide & Goal Checklist: Milestone 1 Frontend Prototype
 
-> **Deadline:** 7 Days  
-> **Target:** Deliver all 6 checklist items for Milestone 1 + conceptual explanation.  
+> **Deadline:** 7 Days
+> **Target:** Deliver all 6 checklist items for Milestone 1 + conceptual explanation.
 > **Reference Architecture:** Follows [`PROPOSAL.md`](PROPOSAL.md). The detail page with a route parameter is `/accounts/:id` (Account/Shelter profile). Animal cards do not have their own detail view; they display info directly and link visitors to the shelter account page.
 
 ---
@@ -10,8 +10,8 @@
 
 - [ ] **Wireframes** (photo or tool) of main screens in `docs/`
 - [ ] **Vue 3 + TypeScript** app created with Vite; strict mode on; ESLint passes (`npm run lint`)
-- [ ] **At least 4 routes**, including a detail page with a route parameter (`/accounts/:id`)
-- [ ] **At least one form** with client-side validation (in `ManageView.vue`)
+- [x] **At least 4 routes**, including a detail page with a route parameter (`/accounts/:id`)
+- [ ] **Client-side validation** across all application forms (`SignUpView.vue`, `LogInView.vue`, `ManageView.vue`)
 - [x] **A Pinia store & service layer** calling a mock API (simulated latency + error handling)
 - [x] **Loading, empty and error states** visible in the UI
 - [ ] **Concept Explanation:** What state lives in the store and what stays inside a component? Why?
@@ -23,10 +23,12 @@
 ### Day 1: Clean Linting & Wireframes in `docs/`
 
 #### 1. Learn & Review
+
 - **Topics:** Vue 3 TypeScript strictness; ESLint / Oxlint `no-unused-vars` rules; Quick wireframing tools (Excalidraw, Figma, or pen-and-paper scan).
 - **Core Goal:** Fix current linter errors so `npm run lint` is clean, and generate wireframes for the 4 primary views.
 
 #### 2. Files to Touch
+
 - **Edit:** `src/data/animals.ts`
   - **Remove:** Unused `Category, Species` imports from line 2.
 - **Create:** `docs/wireframes/`
@@ -38,6 +40,7 @@
   - **Add:** `docs/README.md` linking to these wireframe images.
 
 #### 3. Code Example (Fixing `src/data/animals.ts`)
+
 ```typescript
 // src/data/animals.ts - Line 2
 // Replace: import type { Animal, Category, Species } from '@/types/animal'
@@ -46,6 +49,7 @@ import type { Animal } from '@/types/animal'
 ```
 
 #### 4. Day 1 Done Checklist
+
 - [ ] Ran `npm run lint` and it exited with code 0 (no errors, no warnings).
 - [ ] Created `docs/wireframes/` containing images for Search, Account Detail, Map, and Manage.
 
@@ -54,10 +58,12 @@ import type { Animal } from '@/types/animal'
 ### Day 2: Account Detail Route (`/accounts/:id`) & Card Navigation
 
 #### 1. Learn & Review
+
 - **Topics:** Vue Router 5 dynamic route matching (`:id`); `useRoute()` composition API; type-safe route params.
 - **Concepts:** Per [`PROPOSAL.md`](PROPOSAL.md), animal cards give immediate information, and their link points to `/accounts/:id` (the shelter/poster account).
 
 #### 2. Files to Touch
+
 - **Edit:** `src/types/animal.ts`
   - **Add:** Ensure `Animal` interface contains `userId: number` and add `Account` (or `User`) interface.
 - **Edit:** `src/data/animals.ts`
@@ -73,6 +79,7 @@ import type { Animal } from '@/types/animal'
 #### 3. Code Example
 
 **In `src/router/index.ts`:**
+
 ```typescript
 {
   path: '/accounts/:id',
@@ -82,6 +89,7 @@ import type { Animal } from '@/types/animal'
 ```
 
 **In `src/components/AnimalCard.vue`:**
+
 ```vue
 <RouterLink :to="`/accounts/${animal.userId}`" class="shelter-link">
   Contact Shelter
@@ -89,6 +97,7 @@ import type { Animal } from '@/types/animal'
 ```
 
 **In `src/views/AccountView.vue`:**
+
 ```vue
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
@@ -106,19 +115,22 @@ const accountId = computed(() => Number(route.params.id))
 ```
 
 #### 4. Day 2 Done Checklist
-- [ ] Navigating to `/accounts/1` displays AccountView reading ID `1`.
-- [ ] Clicking "Contact Shelter" on an animal card navigates to `/accounts/:id`.
-- [ ] At least 4 routes are registered in `src/router/index.ts`: `/home`, `/search`, `/map`, `/accounts/:id`, `/manage`.
+
+- [x] Navigating to `/accounts/1` displays AccountView reading ID `1`.
+- [x] Clicking "Contact Shelter" on an animal card navigates to `/accounts/:id`.
+- [x] At least 4 routes are registered in `src/router/index.ts`: `/home`, `/search`, `/map`, `/accounts/:id`, `/manage`.
 
 ---
 
 ### Day 3: Mock API & Service Layer
 
 #### 1. Learn & Review
+
 - **Topics:** The Service Layer pattern in frontend apps; simulating asynchronous API requests using Promises and `setTimeout`; handling network rejections.
 - **Goal:** Decouple components and stores from raw data arrays so swapping to a real NestJS REST API later requires zero component changes.
 
 #### 2. Files to Touch
+
 - **Create:** `src/services/adoptionService.ts`
   - **Add:** Methods:
     - `fetchAnimals(): Promise<Animal[]>`
@@ -127,6 +139,7 @@ const accountId = computed(() => Number(route.params.id))
     - Optional error trigger parameter to test error states.
 
 #### 3. Code Example (`src/services/adoptionService.ts`)
+
 ```typescript
 import { ANIMALS } from '@/data/animals'
 import type { Animal } from '@/types/animal'
@@ -165,6 +178,7 @@ export const adoptionService = {
 ```
 
 #### 4. Day 3 Done Checklist
+
 - [x] `src/services/adoptionService.ts` created and exports typed async functions.
 - [ ] `npx vue-tsc --noEmit` passes without type errors.
 
@@ -173,18 +187,21 @@ export const adoptionService = {
 ### Day 4: Pinia Store Architecture
 
 #### 1. Learn & Review
+
 - **Topics:** Pinia setup stores (`defineStore` with `<script setup>` syntax); store state, getters, and actions; store state vs. component local state.
 - **Concept Write-Up Prep:** Formulate the answer to the required milestone question:
-  - *Store State:* Shared domain entities (animals, active account, search query).
-  - *Component State:* Ephemeral UI (isDropdownOpen, form validation errors before submit).
+  - _Store State:_ Shared domain entities (animals, active account, search query).
+  - _Component State:_ Ephemeral UI (isDropdownOpen, form validation errors before submit).
 
 #### 2. Files to Touch
+
 - **Create:** `src/stores/adoptionStore.ts`
   - **Add:** State: `animals`, `currentAccount`, `loading`, `error`.
   - **Add:** Actions: `loadAnimals()`, `loadAccount(id: number)`.
 - **Remove:** `src/stores/counter.ts` (cleanup unused boilerplate).
 
 #### 3. Code Example (`src/stores/adoptionStore.ts`)
+
 ```typescript
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -234,6 +251,7 @@ export const useAdoptionStore = defineStore('adoption', () => {
 ```
 
 #### 4. Day 4 Done Checklist
+
 - [x] Pinia store handles `loading`, `error`, and `animals` states.
 - [x] Store actions call the service layer instead of importing data directly.
 
@@ -242,10 +260,12 @@ export const useAdoptionStore = defineStore('adoption', () => {
 ### Day 5: Loading, Empty, and Error UI States
 
 #### 1. Learn & Review
+
 - **Topics:** Conditional rendering in Vue 3 (`v-if`, `v-else-if`, `v-else`); skeleton loaders and accessible status messages.
 - **Goal:** Make loading spinners, error alerts (with retry buttons), and empty result messages visible and interactive.
 
 #### 2. Files to Touch
+
 - **Edit:** `src/views/SearchView.vue`
   - **Remove:** Direct import of `ANIMALS`.
   - **Add:** Import and invoke `useAdoptionStore()`.
@@ -258,6 +278,7 @@ export const useAdoptionStore = defineStore('adoption', () => {
   - **Add:** Equivalent loading, error, and empty state templates when viewing a shelter account.
 
 #### 3. Code Example (`src/views/SearchView.vue`)
+
 ```vue
 <script setup lang="ts">
 import { onMounted } from 'vue'
@@ -302,6 +323,7 @@ onMounted(() => {
 ```
 
 #### 4. Day 5 Done Checklist
+
 - [x] Loading state appears when fetching data.
 - [x] Empty state renders when the array is empty.
 - [x] Error banner displays on rejection with a functioning retry mechanism.
@@ -311,10 +333,12 @@ onMounted(() => {
 ### Day 6: Client-Side Form Validation
 
 #### 1. Learn & Review
+
 - **Topics:** Controlled forms in Vue 3 (`v-model`); client-side validation logic; error display and blocking submission (`@submit.prevent`).
-- **Use Case:** Poster "Post an Animal" form in `src/views/ManageView.vue` (User Story 5 from [`PROPOSAL.md`](PROPOSAL.md)).
+- **Use Cases:** All application forms: Poster "Post an Animal" form in `src/views/ManageView.vue`, account registration in `src/views/SignUpView.vue`, and authentication in `src/views/LogInView.vue`.
 
 #### 2. Files to Touch
+
 - **Edit:** `src/views/ManageView.vue`
   - **Add:** Form fields:
     - Animal Name (required, min 2 chars)
@@ -327,6 +351,7 @@ onMounted(() => {
   - **Add:** Success confirmation banner upon valid submission.
 
 #### 3. Code Example (`src/views/ManageView.vue`)
+
 ```vue
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
@@ -375,9 +400,7 @@ function handleSubmit() {
   <div class="manage-page">
     <h2>Post an Animal for Adoption</h2>
 
-    <div v-if="submitted" class="success-banner">
-      Animal "{{ form.name }}" posted successfully!
-    </div>
+    <div v-if="submitted" class="success-banner">Animal "{{ form.name }}" posted successfully!</div>
 
     <form v-else @submit.prevent="handleSubmit" novalidate>
       <div class="form-group">
@@ -434,28 +457,31 @@ function handleSubmit() {
 ```
 
 #### 4. Day 6 Done Checklist
-- [ ] Submitting empty fields displays inline error messages under each invalid input.
-- [ ] Valid submission blocks error triggers and displays success state.
+
+- [ ] Submitting empty fields displays inline error messages under each invalid input across all forms (`SignUpView`, `LogInView`, `ManageView`).
+- [ ] Valid submissions block error triggers, clear errors, and proceed to success/navigation states.
 
 ---
 
 ### Day 7: Milestone Audit & Conceptual Write-Up
 
 #### 1. Conceptual Explanation Deliverable
+
 Ensure the following explanation is ready in your presentation or `docs/m1-explanation.md`:
 
 > **What state lives in the store and what stays inside a component? Why?**
 >
 > - **Store State (Global / Domain):**
->   - *What:* The shared animals catalog, shelter account profile, active filter parameters, and asynchronous network status (`loading`, `error`).
->   - *Why:* Multiple disconnected views (`SearchView`, `AccountView`, `MapView`) require access to the same records. Centralizing this data in Pinia ensures a single source of truth, eliminates prop drilling, and preserves data across route transitions.
->
+>   - _What:_ The shared animals catalog, shelter account profile, active filter parameters, and asynchronous network status (`loading`, `error`).
+>   - _Why:_ Multiple disconnected views (`SearchView`, `AccountView`, `MapView`) require access to the same records. Centralizing this data in Pinia ensures a single source of truth, eliminates prop drilling, and preserves data across route transitions.
 > - **Component State (Local / Ephemeral):**
->   - *What:* Form input values (`form.name`, `form.email`), validation error messages (`errors`), dropdown toggles, and UI modal flags.
->   - *Why:* Other pages do not need access to unfinished form entries or transient UI state. Keeping them local enforces component encapsulation and frees memory automatically when the component unmounts.
+>   - _What:_ Form input values (`form.name`, `form.email`), validation error messages (`errors`), dropdown toggles, and UI modal flags.
+>   - _Why:_ Other pages do not need access to unfinished form entries or transient UI state. Keeping them local enforces component encapsulation and frees memory automatically when the component unmounts.
 
 #### 2. Verification Commands
+
 Run each command from the workspace root:
+
 ```bash
 # 1. Lint check (must exit 0)
 npm run lint
@@ -468,6 +494,7 @@ npm run build
 ```
 
 #### 4. Final Audit Checklist
+
 - [ ] Wireframes exist in `docs/wireframes/`
 - [ ] Strict mode enabled, `npm run lint` passes
 - [ ] 5 routes working including `/accounts/:id` with dynamic route parameter
@@ -475,4 +502,3 @@ npm run build
 - [ ] Pinia store + service layer with mock API
 - [ ] Loading, empty, and error UI states visible
 - [ ] Conceptual explanation completed
-
