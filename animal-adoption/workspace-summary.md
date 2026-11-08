@@ -4,7 +4,7 @@
 
 - Runtime: Node.js (>=22.18.0 || >=24.12.0), TypeScript 6.0 (strict mode)
 - Frontend: Vue 3.5 (Composition API, `<script setup>`), Vite 8, Vue Router 5, Pinia 4, Leaflet 1.9
-- Dev: `npm run dev`
+- Dev: `npm run dev` (configured with `server.allowedHosts: true` for tunneling)
 - Build: `npm run build`
 - Type-check: `npm run type-check` or `npx vue-tsc --noEmit`
 - Lint: `npm run lint` (`oxlint` + `eslint`)
