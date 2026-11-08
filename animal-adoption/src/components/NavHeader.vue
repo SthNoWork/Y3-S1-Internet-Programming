@@ -1,6 +1,9 @@
 <!-- src/components/NavHeader.vue -->
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
+import { useAdoptionStore } from '@/stores/adoptionStore';
+
+const store = useAdoptionStore();
 </script>
 
 <template>
@@ -14,7 +17,7 @@ import { RouterLink } from 'vue-router';
       <RouterLink to="/search" class="nav-btn">Search</RouterLink>
       <RouterLink to="/map" class="nav-btn">Map</RouterLink>
       <RouterLink to="/account" class="nav-btn">Account</RouterLink>
-      <RouterLink to="/manage" class="nav-btn">Manage</RouterLink>
+      <RouterLink v-if="store.privateAccount" to="/manage" class="nav-btn">Manage</RouterLink>
     </div>
   </nav>
 </template>

@@ -12,7 +12,7 @@ export const useAdoptionStore = defineStore(`adoption`, () => {
   const LOGGED_IN_ACCOUNT_ID = ref<number | null>(null)
   const privateAccount = ref<Account | null>(null)
   const myAnimals = computed(() => {
-    return animals.value.filter((a) => a.accountId === LOGGED_IN_ACCOUNT_ID.value)
+    return animals.value.filter((a) => a.accountId === privateAccount.value?.id)
   })
 
   const loading = ref(false)

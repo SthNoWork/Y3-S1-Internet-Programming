@@ -9,9 +9,9 @@
 ## M1 Requirements Checklist Tracker
 
 - [ ] **Wireframes** (photo or tool) of main screens in `docs/`
-- [ ] **Vue 3 + TypeScript** app created with Vite; strict mode on; ESLint passes (`npm run lint`)
+- [x] **Vue 3 + TypeScript** app created with Vite; strict mode on; ESLint passes (`npm run lint`)
 - [x] **At least 4 routes**, including a detail page with a route parameter (`/accounts/:id`)
-- [ ] **Client-side validation** across all application forms (`SignUpView.vue`, `LogInView.vue`, `ManageView.vue`)
+- [x] **Client-side validation** across all application forms (`SignUpView.vue`, `LogInView.vue`, `ManageView.vue`)
 - [x] **A Pinia store & service layer** calling a mock API (simulated latency + error handling)
 - [x] **Loading, empty and error states** visible in the UI
 - [ ] **Concept Explanation:** What state lives in the store and what stays inside a component? Why?

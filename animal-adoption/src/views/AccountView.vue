@@ -4,13 +4,14 @@ import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAdoptionStore } from '@/stores/adoptionStore';
 import router from '@/router';
+import ProfileCard from '@/components/ProfileCard.vue';
 
 const store = useAdoptionStore()
 const route = useRoute();
 
 const targetId = computed<number | null>(() => {
   if (route.params.id) return Number(route.params.id)
-  return store.LOGGED_IN_ACCOUNT_ID
+  return store.privateAccount?.id ?? store.LOGGED_IN_ACCOUNT_ID
 })
 
 onMounted(() => {
@@ -45,16 +46,7 @@ const currentAccount = computed(() => {
     <div v-else-if="currentAccount">
       <img :src="currentAccount?.coverImageUrl" class="coverImage">
 
-      <div class="profileflexbox">
-        <img :src="currentAccount?.profileImageUrl">
-        <div class="profileInformation">
-          <h2>{{ currentAccount?.name }}</h2>
-          <p>{{ currentAccount?.phone }}</p>
-          <a>Location</a>
-          <p>{{ currentAccount?.description }}</p>
-          <p><b>Notes: </b>{{ currentAccount?.notes }}</p>
-        </div>
-      </div>
+      <ProfileCard :account="currentAccount" :enableEditBtn="false"></ProfileCard>
       <div class="animal-grid">
         <div v-if="animalsInAccount.length === 0">
           <p>This Shelter has no animals</p>
@@ -73,21 +65,6 @@ const currentAccount = computed(() => {
 </template>
 
 <style scoped>
-.account-page {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-
-}
-
-@media (orientation: landscape) {
-  .account-page {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-}
-
 .coverImage {
   aspect-ratio: 3/1;
   width: 100%;
@@ -95,32 +72,6 @@ const currentAccount = computed(() => {
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
 
-}
-
-.profileflexbox {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-
-  align-items: center;
-}
-
-.profileflexbox img {
-  aspect-ratio: 1;
-  object-fit: cover;
-  border-radius: 100%;
-}
-
-.profileInformation {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.profileInformation h2,
-.profileInformation p {
-  margin: 0;
-  /* 🧹 Clears default browser push */
 }
 
 .animal-grid {

@@ -6,6 +6,11 @@ import { computed } from 'vue';
 
 const props = defineProps<{
   animal: Animal
+  enableEditBtn?: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'edit', animal: Animal): void
 }>()
 
 const store = useAdoptionStore()
@@ -51,7 +56,10 @@ const accountUrl = computed(() => {
         <span v-for="id in animal.categoryIds" :key="id" class="category-badge">{{ CATEGORY_NAMES_BY_ID[id] }}</span>
       </div>
 
-      <RouterLink :to="accountUrl" class="routerlink">{{ isMyShelter ? `My Shelter` : `Go to Shelter` }}</RouterLink>
+      <div class="card-footer">
+        <RouterLink :to="accountUrl" class="routerlink">{{ isMyShelter ? `My Shelter` : `Go to Shelter` }}</RouterLink>
+        <button v-if="enableEditBtn" type="button" class="edit-btn" @click="emit('edit', animal)">Edit</button>
+      </div>
     </div>
   </div>
 </template>
@@ -79,6 +87,19 @@ const accountUrl = computed(() => {
   object-fit: cover;
   width: 100%;
   gap: 1.5rem;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.edit-btn {
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
 }
 
 .routerlink {

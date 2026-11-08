@@ -2,6 +2,7 @@ import type { Account } from '@/types/account'
 
 export const ACCOUNTS: Record<number, Account> = {
   1: {
+    id: 1,
     name: 'Happy Paws Rescue',
     description:
       'A non-profit rescue committed to rehabilitating and rehoming stray dogs and cats.',
@@ -16,6 +17,7 @@ export const ACCOUNTS: Record<number, Account> = {
     banned: false,
   },
   2: {
+    id: 2,
     name: 'Bay Area Pet Haven',
     description:
       'Providing safe shelter, medical treatment, and loving homes for abandoned animals.',
@@ -30,6 +32,7 @@ export const ACCOUNTS: Record<number, Account> = {
     banned: false,
   },
   3: {
+    id: 3,
     name: 'Sunset Critter Sanctuary',
     description: 'Focused on special-needs and senior pets who need gentle, patient homes.',
     profileImageUrl: 'https://images.unsplash.com/photo-1560743641-3914f4c4b88c?w=200',
@@ -43,6 +46,7 @@ export const ACCOUNTS: Record<number, Account> = {
     banned: false,
   },
   4: {
+    id: 4,
     name: 'East Bay Feline Foundation',
     description: 'Dedicated to community cat welfare, foster placement, and kitten adoptions.',
     profileImageUrl: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=200',
@@ -56,6 +60,7 @@ export const ACCOUNTS: Record<number, Account> = {
     banned: false,
   },
   5: {
+    id: 5,
     name: 'Alex Rivera',
     description: 'Independent poster looking for a good home for an unexpected litter.',
     profileImageUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200',

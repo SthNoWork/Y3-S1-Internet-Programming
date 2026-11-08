@@ -20,7 +20,7 @@ const filteredAnimals = computed(() => {
 </script>
 
 <template>
-  <div class="search-page">
+  <main class="search-page">
     <h2>Welcome to search page</h2>
     <SearchBar v-model="searchQuery" />
 
@@ -42,20 +42,13 @@ const filteredAnimals = computed(() => {
     <div v-else class="animal-grid">
       <AnimalCard v-for="x in filteredAnimals" :key="x.id" :animal="x"> </AnimalCard>
     </div>
-  </div>
+  </main>
 
 </template>
 
 <style scoped>
 .search-page {
-  display: flex;
-  flex-direction: column;
   padding: 1rem;
-  width: 100%;
-  max-width: 1200px;
-  /* 📏 Matches the account page width */
-  margin: 0 auto;
-  /* 🎯 Centers the whole container on wide screens */
 }
 
 h2 {
