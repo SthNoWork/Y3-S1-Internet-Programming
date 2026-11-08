@@ -8,22 +8,14 @@ import router from '@/router';
 const store = useAdoptionStore()
 const route = useRoute();
 
-
-const accountId = computed<number | null>(() => {
-  if (route.params.id) {
-    return Number(route.params.id)
-  }
-
-  if (store.LOGGED_IN_ACCOUNT_ID) {
-    return store.LOGGED_IN_ACCOUNT_ID
-  }
-
-  return null
+const targetId = computed<number | null>(() => {
+  if (route.params.id) return Number(route.params.id)
+  return store.LOGGED_IN_ACCOUNT_ID
 })
 
 onMounted(() => {
-  if (accountId.value) {
-    store.loadAccount(accountId.value)
+  if (targetId.value) {
+    store.loadAccount(targetId.value)
     store.loadAnimals()
   } else {
     router.push(`/signup`)
@@ -31,7 +23,12 @@ onMounted(() => {
 })
 
 const animalsInAccount = computed(() => {
-  return store.animals.filter((x) => x.accountId === accountId.value)
+  return store.animals.filter((x) => x.accountId === targetId.value)
+})
+
+const currentAccount = computed(() => {
+  if (route.params.id) return store.publicAccount
+  return store.privateAccount || store.publicAccount
 })
 </script>
 
@@ -45,17 +42,17 @@ const animalsInAccount = computed(() => {
       <p>{{ store.error }}</p>
     </div>
 
-    <div v-else-if="store.account">
-      <img :src="store.account?.coverImageUrl" class="coverImage">
+    <div v-else-if="currentAccount">
+      <img :src="currentAccount?.coverImageUrl" class="coverImage">
 
       <div class="profileflexbox">
-        <img :src="store.account?.profileImageUrl">
+        <img :src="currentAccount?.profileImageUrl">
         <div class="profileInformation">
-          <h2>{{ store.account?.name }}</h2>
-          <p>{{ store.account?.phone }}</p>
+          <h2>{{ currentAccount?.name }}</h2>
+          <p>{{ currentAccount?.phone }}</p>
           <a>Location</a>
-          <p>{{ store.account?.description }}</p>
-          <p><b>Notes: </b>{{ store.account?.notes }}</p>
+          <p>{{ currentAccount?.description }}</p>
+          <p><b>Notes: </b>{{ currentAccount?.notes }}</p>
         </div>
       </div>
       <div class="animal-grid">

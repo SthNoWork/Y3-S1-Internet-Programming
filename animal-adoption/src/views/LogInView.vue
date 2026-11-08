@@ -18,6 +18,7 @@ function handleSignIn() {
 
   if (match) {
     store.LOGGED_IN_ACCOUNT_ID = Number(match[0])
+    store.privateAccount = match[1]
     router.push(`/account`)
   } else {
     alert(`Invaild email or password`)
@@ -25,7 +26,11 @@ function handleSignIn() {
 }
 
 function devLogin() {
+  const account = ACCOUNTS[1]
+  if (!account) return
+
   store.LOGGED_IN_ACCOUNT_ID = 1
+  store.privateAccount = account
   router.push('/account')
 }
 

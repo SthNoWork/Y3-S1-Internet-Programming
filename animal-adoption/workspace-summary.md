@@ -46,7 +46,7 @@
 - `MD/PROPOSAL.md` - System requirements, user stories, MVP scope, and entity relationships.
 - `MD/goal.md` - 7-day study guide and milestone checklist for Frontend Prototype (M1).
 - `src/services/adoptionService.ts` - Mock async API service (`getAnimals`, `getAccountById`).
-- `src/stores/adoptionStore.ts` - Pinia adoption store (`animals`, `account`, `loading`, `error`, `loadAnimals`, `loadAccount`).
+- `src/stores/adoptionStore.ts` - Pinia adoption store (`animals`, `publicAccount`, `privateAccount`, `myAnimals`, `loading`, `error`, `loadAnimals`, `loadAccount`).
 
 ## Symbol Index
 

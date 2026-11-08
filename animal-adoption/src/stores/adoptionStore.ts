@@ -2,14 +2,19 @@ import { defineStore } from 'pinia'
 import type { Animal } from '@/types/animal'
 import type { Account } from '@/types/account'
 import { adoptionService } from '@/services/adoptionService'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 export const useAdoptionStore = defineStore(`adoption`, () => {
   const animals = ref<Animal[]>([])
-  const account = ref<Account | null>(null)
+  const publicAccount = ref<Account | null>(null)
   const currentAccountId = ref<number | null>(null)
 
   const LOGGED_IN_ACCOUNT_ID = ref<number | null>(null)
+  const privateAccount = ref<Account | null>(null)
+  const myAnimals = computed(() => {
+    return animals.value.filter((a) => a.accountId === LOGGED_IN_ACCOUNT_ID.value)
+  })
+
   const loading = ref(false)
   const error = ref<string | null>(null)
 
@@ -33,7 +38,7 @@ export const useAdoptionStore = defineStore(`adoption`, () => {
   }
 
   async function loadAccount(accountId: number, forceReload = false) {
-    if (account.value && !forceReload && currentAccountId.value === accountId) {
+    if (publicAccount.value && !forceReload && currentAccountId.value === accountId) {
       return
     }
     loading.value = true
@@ -41,7 +46,7 @@ export const useAdoptionStore = defineStore(`adoption`, () => {
 
     try {
       loading.value = true
-      account.value = await adoptionService.getAccountById(accountId)
+      publicAccount.value = await adoptionService.getAccountById(accountId)
       currentAccountId.value = accountId
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'sth went wrong in loadAccount function'
@@ -49,5 +54,15 @@ export const useAdoptionStore = defineStore(`adoption`, () => {
       loading.value = false
     }
   }
-  return { animals, account, LOGGED_IN_ACCOUNT_ID, loading, error, loadAnimals, loadAccount }
+  return {
+    animals,
+    publicAccount,
+    privateAccount,
+    myAnimals,
+    LOGGED_IN_ACCOUNT_ID,
+    loading,
+    error,
+    loadAnimals,
+    loadAccount,
+  }
 })
