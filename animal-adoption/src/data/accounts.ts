@@ -12,8 +12,8 @@ export const ACCOUNTS: Record<number, Account> = {
     password: 'password123',
     phone: '(415) 555-0142',
     notes: 'Please text or call between 9:00 AM and 5:00 PM on weekdays.',
-    latitude: 37.7749,
-    longitude: -122.4194,
+    latitude: 11.5761,
+    longitude: 104.9230,
     banned: false,
   },
   2: {
@@ -27,8 +27,8 @@ export const ACCOUNTS: Record<number, Account> = {
     password: 'password123',
     phone: '(510) 555-0189',
     notes: 'Visits by appointment only. Email preferred.',
-    latitude: 37.8044,
-    longitude: -122.2712,
+    latitude: 11.5508,
+    longitude: 104.9282,
     banned: false,
   },
   3: {
@@ -41,8 +41,8 @@ export const ACCOUNTS: Record<number, Account> = {
     password: 'password123',
     phone: '(415) 555-0177',
     notes: 'Send us an email with the animal name in the subject line.',
-    latitude: 37.7599,
-    longitude: -122.4842,
+    latitude: 11.5406,
+    longitude: 104.9147,
     banned: false,
   },
   4: {
@@ -55,8 +55,8 @@ export const ACCOUNTS: Record<number, Account> = {
     password: 'password123',
     phone: '(510) 555-0123',
     notes: 'Fill out an inquiry on our site or email directly.',
-    latitude: 37.8715,
-    longitude: -122.273,
+    latitude: 11.5683,
+    longitude: 104.9328,
     banned: false,
   },
   5: {
@@ -68,12 +68,20 @@ export const ACCOUNTS: Record<number, Account> = {
     email: 'alex.rivera@example.com',
     password: 'password123',
     phone: '(408) 555-0199',
-    latitude: 37.3382,
-    longitude: -121.8863,
+    latitude: 11.5721,
+    longitude: 104.8987,
     banned: false,
   },
 }
 const saved = localStorage.getItem('accounts')
 if (saved) {
-  Object.assign(ACCOUNTS, JSON.parse(saved))
+  const parsed = JSON.parse(saved)
+  for (const [k, v] of Object.entries(parsed)) {
+    const acc = v as Account
+    if (acc.latitude && acc.latitude > 30 && ACCOUNTS[Number(k)]) {
+      acc.latitude = ACCOUNTS[Number(k)]?.latitude
+      acc.longitude = ACCOUNTS[Number(k)]?.longitude
+    }
+  }
+  Object.assign(ACCOUNTS, parsed)
 }

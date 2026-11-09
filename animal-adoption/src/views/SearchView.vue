@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import SearchBar from '@/components/SearchBar.vue';
 import AnimalCard from '@/components/AnimalCard.vue';
+import SearchIcon from '@/components/icons/SearchIcon.vue';
 import { computed, onMounted, ref } from 'vue'
 import { useAdoptionStore } from '@/stores/adoptionStore'
 
@@ -22,7 +22,10 @@ const filteredAnimals = computed(() => {
 <template>
   <main class="search-page">
     <h2>Welcome to search page</h2>
-    <SearchBar v-model="searchQuery" />
+    <div class="search-layout">
+      <input class="search-input" v-model="searchQuery" placeholder="Doggo is a good boy">
+      <SearchIcon />
+    </div>
 
     <div v-if="store.loading">
       <p>Loading animals from shelter...</p>
@@ -53,6 +56,23 @@ const filteredAnimals = computed(() => {
 
 h2 {
   align-self: center;
+}
+
+.search-layout {
+  display: flex;
+  padding: 1rem 0;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.search-input {
+  border-radius: 5%;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 15rem;
+  padding: 0.25rem 0.25rem;
+  outline: none;
 }
 
 .animal-grid {

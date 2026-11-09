@@ -30,10 +30,8 @@
 - `src/App.vue` - Root layout; renders navigation header and `<RouterView />`.
 - `src/components/NavHeader.vue` - Top navigation bar with links; conditionally shows `/manage` when logged in.
 - `src/components/AnimalCard.vue` - Card displaying animal bio, tags, shelter link, and optional `@edit` button.
-- `src/components/SearchBar.vue` - Search input field for filtering animals by name.
-- `src/views/HomeView.vue` - Landing page with app description.
-- `src/views/SearchView.vue` - Search and filter page listing animal cards.
-- `src/views/MapView.vue` - Leaflet interactive map displaying account location pins.
+- `src/views/SearchView.vue` - Search and filter page with inline search input and animal cards grid.
+- `src/views/MapView.vue` - Leaflet interactive map with circular avatar pins, animal count metrics, and right-aligned shelter navigation.
 - `src/views/AccountView.vue` - Account detail page showing profile info, animals, and empty/not-found states.
 - `src/views/SignUpView.vue` - Account registration form with reactive client-side validation.
 - `src/views/LogInView.vue` - Account authentication with reactive client-side validation.
@@ -42,7 +40,7 @@
 - `src/types/animal.ts` - Data types for `Animal`, `User`/`Account`, `Tag`, `Species`.
 - `src/types/account.ts` - Interface for `Account` (`name`, `email`, `password`, `description`, etc.).
 - `src/data/animals.ts` - Mock data fixtures for animals and species lookups.
-- `src/data/accounts.ts` - Mock `ACCOUNTS` map fixtures.
+- `src/data/accounts.ts` - Mock `ACCOUNTS` map fixtures with Phnom Penh coordinates and localStorage sync.
 - `MD/PROPOSAL.md` - System requirements, user stories, MVP scope, and entity relationships.
 - `MD/goal.md` - 7-day study guide and milestone checklist for Frontend Prototype (M1).
 - `MD/vue-defines-guide.md` - Guide for `defineProps`, `defineEmits`, and `defineModel` patterns and examples.
