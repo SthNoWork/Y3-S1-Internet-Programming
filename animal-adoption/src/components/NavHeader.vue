@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
 import { useAdoptionStore } from '@/stores/adoptionStore';
+import PawIcon from '@/components/icons/PawIcon.vue';
 
 const store = useAdoptionStore();
 </script>
@@ -9,6 +10,7 @@ const store = useAdoptionStore();
 <template>
   <nav class="nav-header">
     <div class="logo">
+      <PawIcon type="cat" :size="26" color="#ea580c" />
       <h2>Paw Finder</h2>
     </div>
 
@@ -29,6 +31,12 @@ const store = useAdoptionStore();
   justify-content: space-between;
   align-items: center;
   padding: 0rem 1rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .nav-btn {
