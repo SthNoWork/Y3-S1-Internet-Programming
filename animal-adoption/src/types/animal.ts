@@ -2,7 +2,7 @@ export interface Animal {
   id: number
   accountId: number
   name: string
-  age: number
+  birthDate: string
   gender: 'male' | 'female'
   speciesId: number
   status: 'available' | 'pending' | 'adopted'

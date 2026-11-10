@@ -2,14 +2,15 @@
 import AnimalCard from '@/components/AnimalCard.vue';
 import ProfileCard from '@/components/ProfileCard.vue';
 import { ACCOUNTS } from '@/data/accounts';
-import { SPECIES_BY_ID } from '@/data/animals';
+import { SPECIES_BY_ID, CATEGORY_NAMES_BY_ID } from '@/data/animals';
 import router from '@/router';
 import { useAdoptionStore } from '@/stores/adoptionStore';
 import type { Account } from '@/types/account';
 import type { Animal } from '@/types/animal';
+import { formatAge } from '@/utils/date';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { nextTick, onMounted, reactive, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue';
 
 const store = useAdoptionStore()
 const isEditing = ref(false)
@@ -121,7 +122,7 @@ function saveProfile() {
 function createBlankAnimal(): Partial<Animal> {
   return {
     name: '',
-    age: 0,
+    birthDate: '',
     gender: 'male',
     speciesId: 1,
     status: 'available',
@@ -129,23 +130,25 @@ function createBlankAnimal(): Partial<Animal> {
     requirement: '',
     thumbnailUrl: '',
     imageUrls: [],
-    categoryIds: [1],
+    categoryIds: [],
     isVaccinated: false,
     isNeutered: false,
   }
 }
 
 const animalForm = reactive<Partial<Animal>>(createBlankAnimal())
+const ageText = computed(() => formatAge(animalForm.birthDate))
+const todayDate = new Date().toISOString().split('T')[0]
 const isEditingAnimal = ref(false)
 const animalErrors = reactive({
   name: '',
-  age: '',
-  requirement: ''
+  birthDate: '',
+  requirement: '',
 })
 
 function validateAnimal(): boolean {
   animalErrors.name = ''
-  animalErrors.age = ''
+  animalErrors.birthDate = ''
   animalErrors.requirement = ''
 
   let isValid = true
@@ -153,9 +156,15 @@ function validateAnimal(): boolean {
     animalErrors.name = 'Animal name is required'
     isValid = false
   }
-  if (animalForm.age === undefined || animalForm.age === null || Number(animalForm.age) < 0) {
-    animalErrors.age = 'Age must be 0 or greater'
+  if (!animalForm.birthDate) {
+    animalErrors.birthDate = 'Please select a birth date'
     isValid = false
+  } else {
+    const birth = new Date(animalForm.birthDate)
+    if (birth > new Date()) {
+      animalErrors.birthDate = 'Birth date cannot be in the future'
+      isValid = false
+    }
   }
   if (!animalForm.requirement?.trim() || animalForm.requirement.length < 5) {
     animalErrors.requirement = 'Please specify requirements (at least 5 characters)'
@@ -168,7 +177,7 @@ function startEditAnimal(animal: Animal) {
   isEditingAnimal.value = true
   Object.assign(animalForm, animal)
   animalErrors.name = ''
-  animalErrors.age = ''
+  animalErrors.birthDate = ''
   animalErrors.requirement = ''
 }
 
@@ -179,7 +188,7 @@ function resetAnimalForm() {
   delete animalForm.id
   delete animalForm.accountId
   animalErrors.name = ''
-  animalErrors.age = ''
+  animalErrors.birthDate = ''
   animalErrors.requirement = ''
 }
 
@@ -258,8 +267,10 @@ function deleteAnimal(id: number) {
           <span v-if="animalErrors.name" class="error-text">{{ animalErrors.name }}</span>
         </div>
         <div class="field">
-          <input v-model.number="animalForm.age" type="number" min="0" placeholder="Age (years)">
-          <span v-if="animalErrors.age" class="error-text">{{ animalErrors.age }}</span>
+          <label>Birth Date:</label>
+          <input v-model="animalForm.birthDate" type="date" :max="todayDate">
+          <span v-if="animalErrors.birthDate" class="error-text">{{ animalErrors.birthDate }}</span>
+          <span v-if="animalForm.birthDate" class="age-hint">Calculated Age: {{ ageText }}</span>
         </div>
 
         <div class="row">
@@ -287,6 +298,16 @@ function deleteAnimal(id: number) {
         <div class="field">
           <input v-model="animalForm.requirement" type="text" placeholder="Special Requirements (e.g. Needs a yard)">
           <span v-if="animalErrors.requirement" class="error-text">{{ animalErrors.requirement }}</span>
+        </div>
+
+        <div class="field">
+          <label>Categories / Traits:</label>
+          <div class="categories-grid">
+            <label v-for="(name, id) in CATEGORY_NAMES_BY_ID" :key="id" class="category-item">
+              <input type="checkbox" :value="Number(id)" v-model="animalForm.categoryIds">
+              {{ name }}
+            </label>
+          </div>
         </div>
 
         <div class="checkbox-row">
@@ -371,6 +392,29 @@ form textarea {
 .error-text {
   color: #dc2626;
   font-size: 0.85rem;
+}
+
+.age-hint {
+  font-size: 0.85rem;
+  color: #059669;
+  font-weight: 500;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.5rem;
+  background: #f9fafb;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.category-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  cursor: pointer;
 }
 
 .animal-section {

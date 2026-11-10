@@ -2,6 +2,7 @@
 import { CATEGORY_NAMES_BY_ID, SPECIES_BY_ID } from '@/data/animals';
 import { useAdoptionStore } from '@/stores/adoptionStore';
 import type { Animal } from '@/types/animal';
+import { formatAge } from '@/utils/date';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -38,7 +39,7 @@ const accountUrl = computed(() => {
       <!-- 🐾 Quick Stats Row -->
       <div class="stats-row">
         <span>Species ID: {{ SPECIES_BY_ID[animal.speciesId] }} | </span>
-        <span>{{ animal.age }} years old | </span>
+        <span>{{ formatAge(animal.birthDate) }} | </span>
         <span>{{ animal.gender }}</span>
       </div>
 
