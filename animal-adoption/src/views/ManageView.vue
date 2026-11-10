@@ -7,10 +7,61 @@ import router from '@/router';
 import { useAdoptionStore } from '@/stores/adoptionStore';
 import type { Account } from '@/types/account';
 import type { Animal } from '@/types/animal';
-import { onMounted, reactive, ref, watch } from 'vue';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import { nextTick, onMounted, reactive, ref, watch } from 'vue';
 
 const store = useAdoptionStore()
 const isEditing = ref(false)
+const showMapPicker = ref(false)
+const pickerMapEl = ref<HTMLElement | null>(null)
+let pickerMap: L.Map | null = null
+let pickerMarker: L.Marker | null = null
+
+const pinIcon = L.divIcon({
+  className: 'picker-pin',
+  html: '<span style="font-size:24px;line-height:1;display:block;">📍</span>',
+  iconSize: [24, 24],
+  iconAnchor: [12, 24],
+})
+
+function toggleMapPicker() {
+  showMapPicker.value = !showMapPicker.value
+}
+
+watch(showMapPicker, async (shown) => {
+  if (shown) {
+    await nextTick()
+    if (!pickerMapEl.value) return
+    const defaultLat = editForm.latitude || 11.5761
+    const defaultLng = editForm.longitude || 104.923
+    if (!pickerMap) {
+      pickerMap = L.map(pickerMapEl.value).setView([defaultLat, defaultLng], 12)
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(pickerMap)
+      pickerMap.on('click', (e: L.LeafletMouseEvent) => {
+        const lat = Number(e.latlng.lat.toFixed(6))
+        const lng = Number(e.latlng.lng.toFixed(6))
+        editForm.latitude = lat
+        editForm.longitude = lng
+        if (pickerMarker) {
+          pickerMarker.setLatLng(e.latlng)
+        } else if (pickerMap) {
+          pickerMarker = L.marker(e.latlng, { icon: pinIcon }).addTo(pickerMap)
+        }
+      })
+    } else {
+      pickerMap.invalidateSize()
+      pickerMap.setView([defaultLat, defaultLng])
+    }
+    if (editForm.latitude && editForm.longitude) {
+      if (pickerMarker) {
+        pickerMarker.setLatLng([editForm.latitude, editForm.longitude])
+      } else {
+        pickerMarker = L.marker([editForm.latitude, editForm.longitude], { icon: pinIcon }).addTo(pickerMap)
+      }
+    }
+  }
+})
 
 onMounted(() => {
   if (!store.privateAccount) {
@@ -144,21 +195,12 @@ function saveAnimal() {
     }
   } else {
     const newAnimal: Animal = {
+      ...createBlankAnimal(),
+      ...animalForm,
       id: Date.now(),
       accountId: store.privateAccount.id,
-      name: animalForm.name || '',
-      age: Number(animalForm.age) || 0,
-      gender: animalForm.gender || 'male',
-      speciesId: Number(animalForm.speciesId) || 1,
-      status: animalForm.status || 'available',
-      description: animalForm.description || '',
-      requirement: animalForm.requirement || '',
       thumbnailUrl: animalForm.thumbnailUrl || 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400',
-      imageUrls: animalForm.imageUrls || [],
-      categoryIds: animalForm.categoryIds || [1],
-      isVaccinated: Boolean(animalForm.isVaccinated),
-      isNeutered: Boolean(animalForm.isNeutered),
-    }
+    } as Animal
     store.animals.unshift(newAnimal)
   }
   resetAnimalForm()
@@ -201,8 +243,9 @@ function deleteAnimal(id: number) {
       <div class="location-picker">
         <span>Location: {{ editForm.latitude && editForm.longitude ? `${editForm.latitude}, ${editForm.longitude}` :
           'Not set' }}</span>
-        <button type="button" disabled>Pick on Map (Coming Soon)</button>
+        <button type="button" @click="toggleMapPicker">{{ showMapPicker ? 'Close Map' : 'Pick on Map' }}</button>
       </div>
+      <div v-if="showMapPicker" ref="pickerMapEl" class="picker-map"></div>
       <button type="submit">Save</button>
     </form>
 
@@ -260,7 +303,21 @@ function deleteAnimal(id: number) {
       </form>
     </section>
 
-    <div class="animal-grid">
+    <div v-if="store.loading" class="state-box">
+      <p>⏳ Loading your animals...</p>
+    </div>
+
+    <div v-else-if="store.error" class="state-box error-box">
+      <p>⚠️ {{ store.error }}</p>
+      <button type="button" class="state-retry-btn" @click="store.loadAnimals(false, true)">Try Again</button>
+    </div>
+
+    <div v-else-if="store.myAnimals.length === 0" class="state-box">
+      <p>You haven't posted any animals yet.</p>
+      <p style="font-size: 0.875rem;">Use the form above to post your first rescue!</p>
+    </div>
+
+    <div v-else class="animal-grid">
       <AnimalCard v-for="x in store.myAnimals" :key="x.id" :animal="x" :enableEditBtn="true"
         @edit="startEditAnimal(x)" />
     </div>
@@ -296,6 +353,13 @@ form textarea {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.picker-map {
+  width: 100%;
+  height: 240px;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
 }
 
 .field {

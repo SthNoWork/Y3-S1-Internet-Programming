@@ -5,27 +5,62 @@ import PawIcon from '@/components/icons/PawIcon.vue'
 import type { Account } from '@/types/account'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { computed, nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 const store = useAdoptionStore()
+const route = useRoute()
 const mapEl = ref<HTMLElement | null>(null)
 const popupContainer = ref<HTMLElement | null>(null)
 const selectedAccount = ref<Account | null>(null)
+let leafletMap: L.Map | null = null
+const shelterMarkers: Record<number, { marker: L.Marker; account: Account }> = {}
 
 const selectedAnimalCount = computed(() => {
   if (!selectedAccount.value) return 0
   return store.animals.filter((a) => a.accountId === selectedAccount.value?.id).length
 })
 
+async function focusAccount(account: Account, marker: L.Marker) {
+  if (!leafletMap) return
+  selectedAccount.value = account
+  await nextTick()
+  if (popupContainer.value) {
+    marker.bindPopup(popupContainer.value, {
+      autoPan: true,
+      autoPanPadding: [50, 50],
+    }).openPopup()
+  }
+  leafletMap.setView([account.latitude!, account.longitude!], 14, { animate: true })
+}
+
 onMounted(() => {
   store.loadAnimals()
   if (!mapEl.value) return
-  const leafletMap = L.map(mapEl.value).setView([11.5564, 104.9282], 13)
+  const initialLat = 11.5564
+  const initialLng = 104.9282
+  leafletMap = L.map(mapEl.value).setView([initialLat, initialLng], 12)
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(leafletMap)
-  loadShelters(leafletMap)
+  loadShelters()
+
+  const targetId = Number(route.query.accountId)
+  if (targetId && shelterMarkers[targetId]) {
+    const { account, marker } = shelterMarkers[targetId]
+    focusAccount(account, marker)
+  }
 })
 
-function loadShelters(leafletMap: L.Map): void {
+watch(() => route.query.accountId, (newId) => {
+  const targetId = Number(newId)
+  if (targetId && shelterMarkers[targetId]) {
+    const { account, marker } = shelterMarkers[targetId]
+    focusAccount(account, marker)
+  }
+})
+
+function loadShelters(): void {
+  if (!leafletMap) return
+  const map = leafletMap
   Object.values(ACCOUNTS).forEach((x) => {
     if (x.latitude && x.longitude) {
       const lat = x.latitude
@@ -38,18 +73,11 @@ function loadShelters(leafletMap: L.Map): void {
         className: 'shelter-pin',
       })
 
-      const marker = L.marker([lat, lng], { icon }).addTo(leafletMap)
+      const marker = L.marker([lat, lng], { icon }).addTo(map)
+      shelterMarkers[x.id] = { marker, account: x }
 
-      marker.on('click', async () => {
-        selectedAccount.value = x
-        await nextTick()
-        if (popupContainer.value) {
-          marker.bindPopup(popupContainer.value, {
-            autoPan: true,
-            autoPanPadding: [50, 50],
-          }).openPopup()
-        }
-        leafletMap.panTo([lat, lng])
+      marker.on('click', () => {
+        focusAccount(x, marker)
       })
     }
   })
@@ -69,6 +97,15 @@ function loadShelters(leafletMap: L.Map): void {
         <PawIcon type="cat" :size="42" color="#c2410c" :rotation="-15" :opacity="0.8" />
       </div>
     </section>
+
+    <div v-if="store.loading" class="map-status-overlay">
+      <span>⏳ Loading rescue shelters...</span>
+    </div>
+
+    <div v-else-if="store.error" class="map-error-banner">
+      <span>⚠️ {{ store.error }}</span>
+      <button type="button" class="state-retry-btn" @click="store.loadAnimals(false, true)">Try Again</button>
+    </div>
 
     <div class="map" ref="mapEl"></div>
 
@@ -199,5 +236,28 @@ function loadShelters(leafletMap: L.Map): void {
   border: 3px solid #ffffff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
   object-fit: cover;
+}
+
+.map-status-overlay {
+  align-self: center;
+  background: #ffffff;
+  padding: 0.65rem 1.25rem;
+  border-radius: 9999px;
+  color: #ea580c;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0.5rem;
+}
+
+.map-error-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
 }
 </style>

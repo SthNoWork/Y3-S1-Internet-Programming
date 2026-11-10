@@ -19,12 +19,7 @@ export const adoptionService = {
   async getAccountById(accountId: number): Promise<Account | null> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        const account = ACCOUNTS[accountId]
-        if (account) {
-          resolve(account)
-        } else {
-          resolve(null)
-        }
+        resolve(ACCOUNTS[accountId] ?? null)
       }, 500)
     })
   },

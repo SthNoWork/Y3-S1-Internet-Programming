@@ -37,11 +37,16 @@ const featuredAnimals = computed(() => {
         <RouterLink to="/search" class="see-all-link">View all animals &rarr;</RouterLink>
       </div>
 
-      <div v-if="store.loading" class="state-message">
-        <p>Loading available animals...</p>
+      <div v-if="store.loading" class="state-box">
+        <p>⏳ Loading available animals...</p>
       </div>
 
-      <div v-else-if="featuredAnimals.length === 0" class="state-message">
+      <div v-else-if="store.error" class="state-box error-box">
+        <p>⚠️ {{ store.error }}</p>
+        <button type="button" class="state-retry-btn" @click="store.loadAnimals(false, true)">Try Again</button>
+      </div>
+
+      <div v-else-if="featuredAnimals.length === 0" class="state-box">
         <p>No animals currently available.</p>
       </div>
 

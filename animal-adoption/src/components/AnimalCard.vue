@@ -83,9 +83,11 @@ const accountUrl = computed(() => {
 }
 
 .thumbnail {
+  display: block;
   aspect-ratio: 4/3;
   object-fit: cover;
   width: 100%;
+  background-color: #f3f4f6;
   gap: 1.5rem;
 }
 

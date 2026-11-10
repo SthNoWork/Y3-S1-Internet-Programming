@@ -69,7 +69,11 @@ watch(
 
     <NavHeader class="content-layer" />
     <main class="main-content content-layer">
-      <RouterView :key="$route.fullPath" />
+      <RouterView v-slot="{ Component }">
+        <Transition name="page-fade" mode="out-in">
+          <component :is="Component" :key="$route.fullPath" />
+        </Transition>
+      </RouterView>
     </main>
     <Footer class="content-layer" />
   </div>
@@ -86,7 +90,7 @@ watch(
 }
 
 .background-paws {
-  position: absolute;
+  position: fixed;
   inset: 0;
   pointer-events: none;
   overflow: hidden;
@@ -100,5 +104,16 @@ watch(
 
 .main-content {
   flex: 1;
+}
+
+.page-fade-enter-active,
+.page-fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.page-fade-enter-from,
+.page-fade-leave-to {
+  opacity: 0;
+  transform: translateY(4px);
 }
 </style>

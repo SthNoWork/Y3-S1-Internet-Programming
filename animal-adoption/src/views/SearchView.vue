@@ -4,18 +4,69 @@ import SearchIcon from '@/components/icons/SearchIcon.vue';
 import PawIcon from '@/components/icons/PawIcon.vue';
 import { computed, onMounted, ref } from 'vue'
 import { useAdoptionStore } from '@/stores/adoptionStore'
+import { SPECIES_BY_ID } from '@/data/species'
+import { CATEGORY_NAMES_BY_ID } from '@/data/categories'
 
 const searchQuery = ref('')
+const selectedSpeciesIds = ref<number[]>([])
+const selectedCategoryIds = ref<number[]>([])
+const matchAllCategories = ref(true)
+
 const store = useAdoptionStore()
 
 onMounted(() => {
   store.loadAnimals()
 })
 
+function toggleFilter(list: number[], id: number) {
+  const index = list.indexOf(id)
+  if (index === -1) {
+    list.push(id)
+  } else {
+    list.splice(index, 1)
+  }
+}
+
+function clearAllFilters() {
+  searchQuery.value = ''
+  selectedSpeciesIds.value = []
+  selectedCategoryIds.value = []
+}
+
+const hasActiveFilters = computed(() => {
+  return (
+    searchQuery.value.trim().length > 0 ||
+    selectedSpeciesIds.value.length > 0 ||
+    selectedCategoryIds.value.length > 0
+  )
+})
 
 const filteredAnimals = computed(() => {
-  return store.animals.filter((x) => {
-    return x.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+  return store.animals.filter((animal) => {
+    // 1. Search name
+    const matchesName = animal.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+    if (!matchesName) return false
+
+    // 2. Species multi-select
+    if (
+      selectedSpeciesIds.value.length > 0 &&
+      !selectedSpeciesIds.value.includes(animal.speciesId)
+    ) {
+      return false
+    }
+
+    // 3. Category multi-select
+    // matchAllCategories = true (Hard filter: must have ALL selected categories)
+    // matchAllCategories = false (Soft filter: must have AT LEAST ONE selected category)
+    if (selectedCategoryIds.value.length > 0) {
+      const matchesCategory = matchAllCategories.value
+        ? selectedCategoryIds.value.every((id) => animal.categoryIds.includes(id))
+        : selectedCategoryIds.value.some((id) => animal.categoryIds.includes(id))
+
+      if (!matchesCategory) return false
+    }
+
+    return true
   })
 })
 </script>
@@ -50,22 +101,61 @@ const filteredAnimals = computed(() => {
       </div>
       <div class="search-stats">
         <span>Showing <strong>{{ filteredAnimals.length }}</strong> {{ filteredAnimals.length === 1 ? 'pet' : 'pets'
-          }}</span>
+        }}</span>
       </div>
+    </div>
+
+    <!-- Multi-select Filter Bar -->
+    <div class="filters-container">
+      <div class="filter-group">
+        <span class="filter-label">Species:</span>
+        <div class="filter-pills">
+          <button v-for="(name, id) in SPECIES_BY_ID" :key="id" type="button" class="filter-pill"
+            :class="{ active: selectedSpeciesIds.includes(Number(id)) }" @click="toggleFilter(selectedSpeciesIds, Number(id))">
+            {{ name }}
+          </button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <div class="filter-header-row">
+          <span class="filter-label">Categories:</span>
+          <div class="filter-mode-toggle" title="Choose filter behavior">
+            <button type="button" class="mode-btn" :class="{ active: matchAllCategories }"
+              @click="matchAllCategories = true">
+              Match All
+            </button>
+            <button type="button" class="mode-btn" :class="{ active: !matchAllCategories }"
+              @click="matchAllCategories = false">
+              Match Any
+            </button>
+          </div>
+        </div>
+        <div class="filter-pills">
+          <button v-for="(name, id) in CATEGORY_NAMES_BY_ID" :key="id" type="button" class="filter-pill"
+            :class="{ active: selectedCategoryIds.includes(Number(id)) }" @click="toggleFilter(selectedCategoryIds, Number(id))">
+            {{ name }}
+          </button>
+        </div>
+      </div>
+
+      <button v-if="hasActiveFilters" type="button" class="clear-all-btn" @click="clearAllFilters">
+        Clear All Filters
+      </button>
     </div>
 
     <div v-if="store.loading" class="state-box">
       <p>Loading animals from shelters...</p>
     </div>
 
-    <div v-if="store.error" class="state-box error-box">
+    <div v-else-if="store.error" class="state-box error-box">
       <p>{{ store.error }}</p>
       <button @click="store.loadAnimals()">Try Again</button>
     </div>
 
     <div v-else-if="filteredAnimals.length === 0" class="state-box empty-box">
-      <p>No animals matched "{{ searchQuery }}"</p>
-      <button v-if="searchQuery" @click="searchQuery = ''" class="reset-btn">Clear Search</button>
+      <p>No animals matched your search criteria.</p>
+      <button v-if="hasActiveFilters" @click="clearAllFilters" class="reset-btn">Clear All Filters</button>
     </div>
 
     <div v-else class="animal-grid">
@@ -232,7 +322,112 @@ const filteredAnimals = computed(() => {
   padding-left: 0.5rem;
 }
 
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  background-color: #ffffff;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filter-header-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.filter-mode-toggle {
+  display: inline-flex;
+  background-color: #f3f4f6;
+  padding: 0.15rem;
+  border-radius: 9999px;
+  border: 1px solid #e5e7eb;
+}
+
+.mode-btn {
+  background: transparent;
+  border: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mode-btn.active {
+  background-color: #ea580c;
+  color: #ffffff;
+}
+
+.filter-label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #4b5563;
+  min-width: 90px;
+}
+
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.filter-pill {
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+  font-size: 0.8125rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.filter-pill:hover {
+  background-color: #e5e7eb;
+}
+
+.filter-pill.active {
+  background-color: #ea580c;
+  border-color: #ea580c;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.clear-all-btn {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: #ea580c;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0.25rem 0;
+}
+
+.clear-all-btn:hover {
+  color: #c2410c;
+}
+
 .state-box {
+  min-height: 450px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 3rem 1rem;
   text-align: center;
   color: #6b7280;
@@ -251,9 +446,11 @@ const filteredAnimals = computed(() => {
 }
 
 .animal-grid {
+  min-height: 450px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
+  align-content: start;
 }
 
 @media (max-width: 768px) {
