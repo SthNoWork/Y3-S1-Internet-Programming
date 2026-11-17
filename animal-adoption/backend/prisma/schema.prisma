@@ -1,0 +1,58 @@
+// backend/prisma/schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id              Int      @id @default(autoincrement())
+  name            String
+  email           String   @unique
+  password        String
+  description     String?
+  profileImageUrl String?
+  coverImageUrl   String?
+  phone           String?
+  notes           String?
+  latitude        Float?
+  longitude       Float?
+  banned          Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  animals         Animal[]
+}
+
+model Species {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  animals Animal[]
+}
+
+model Animal {
+  id           Int        @id @default(autoincrement())
+  accountId    Int
+  account      Account    @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  speciesId    Int
+  species      Species    @relation(fields: [speciesId], references: [id])
+  name         String
+  birthDate    DateTime   @db.Date
+  gender       String
+  status       String     @default("available")
+  description  String
+  requirement  String
+  thumbnailUrl String?
+  imageUrls    String[]
+  isVaccinated Boolean    @default(false)
+  isNeutered   Boolean    @default(false)
+  categories   Category[]
+}
+
+model Category {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  animals Animal[]
+}

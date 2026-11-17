@@ -49,10 +49,11 @@
 - `src/data/species.ts` - Species lookup record fixture.
 - `src/data/categories.ts` - Category names lookup dictionary fixture.
 - `src/utils/date.ts` - Date and age calculation utilities (`formatAge`).
-- `docs/PROPOSAL.md` - System requirements, user stories, MVP scope, and entity relationships.
-- `docs/M1_COMPELETION.MD` - Milestone 1 completion report with checklist, architecture breakdown, and conceptual write-up.
-- `MD/goal.md` - 7-day study guide and milestone checklist for Frontend Prototype (M1).
-- `MD/vue-defines-guide.md` - Guide for `defineProps`, `defineEmits`, and `defineModel` patterns and examples.
+- `MD/M0/m0-project-proposal.md` - System requirements, user stories, MVP scope, and entity relationships.
+- `MD/M1/` - Frontend prototype study guides (CSS box model, Vue script setup defines, service layer & Pinia).
+- `MD/M2/` - Milestone 2 backend API guides (14-day study plan, HTTP status codes & errors, Docker & PostgreSQL guide).
+- `MD/M3/` - Milestone 3 integration overview (JWT authentication, role guards, real API calls).
+- `MD/project_guidelines.md` - Course syllabus, project rubric, and milestone checklists.
 - `src/services/adoptionService.ts` - Mock async API service (`getAnimals`, `getAccountById`).
 - `src/stores/adoptionStore.ts` - Pinia adoption store (`animals`, `publicAccount`, `privateAccount`, `myAnimals`, `loading`, `error`, `loadAnimals`, `loadAccount`).
 

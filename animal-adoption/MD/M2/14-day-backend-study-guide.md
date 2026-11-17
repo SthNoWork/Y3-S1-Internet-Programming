@@ -2,13 +2,13 @@
 
 > **Schedule:** Nov 11, 2026 – Nov 24, 2026 (6 Days Dev + 1 Day Review per week)
 > **Target:** Deliver all Milestone 2 requirements for Paw Finder REST API using **NestJS**, **Prisma ORM**, and **PostgreSQL**.
-> **Reference Architecture:** Follows [`MD/project_guidelines.md`](project_guidelines.md) and [`MD/PROPOSAL.md`](PROPOSAL.md).
+> **Reference Architecture:** Follows [`MD/project_guidelines.md`](../project_guidelines.md) and [`MD/M0/m0-project-proposal.md`](../M0/m0-project-proposal.md).
 
 ---
 
 ## M2 Requirements Checklist Tracker
 
-- [ ] **API contract** (`docs/api.md`) and **ERD diagram** (`docs/erd.md`) in `docs/`
+- [x] **API contract** (`docs/api.md`) and **ERD diagram** (`docs/erd.md`) in `docs/`
 - [ ] **NestJS REST API** organized with modular architecture (controller, service, DTOs per resource)
 - [ ] **Prisma schema**, PostgreSQL migrations, and automated seed script running in Docker
 - [ ] **CRUD endpoints** for at least 3 entities (`Account`, `Animal`, `Category`)
@@ -119,8 +119,8 @@ erDiagram
 
 #### 5. Day 1 Done Checklist
 
-- [ ] `docs/api.md` contains table covering all endpoints.
-- [ ] `docs/erd.md` renders cleanly with all 4 entities and relationships matching the frontend models.
+- [x] `docs/api.md` contains table covering all endpoints.
+- [x] `docs/erd.md` renders cleanly with all 4 entities and relationships matching the frontend models.
 
 ---
 
@@ -180,8 +180,8 @@ DATABASE_URL="postgresql://pawfinder:pawfinder_secret@localhost:5432/pawfinder_d
 
 #### 5. Day 2 Done Checklist
 
-- [ ] Running `docker compose up -d` starts container `pawfinder-postgres`.
-- [ ] Running `docker ps` shows PostgreSQL listening on port `5432`.
+- [x] Running `docker compose up -d` starts container `pawfinder-postgres`.
+- [x] Running `docker ps` shows PostgreSQL listening on port `5432`.
 
 ---
 
@@ -219,8 +219,8 @@ DATABASE_URL="postgresql://pawfinder:pawfinder_secret@localhost:5432/pawfinder_d
 
 #### 4. Day 3 Done Checklist
 
-- [ ] NestJS boots successfully with `npm run start:dev`.
-- [ ] Browser or cURL request to `http://localhost:3000` responds `200 OK`.
+- [x] NestJS boots successfully with `npm run start:dev`.
+- [x] Browser or cURL request to `http://localhost:3000` responds `200 OK`.
 
 ---
 
@@ -239,12 +239,11 @@ DATABASE_URL="postgresql://pawfinder:pawfinder_secret@localhost:5432/pawfinder_d
 
 #### 2. Step-by-Step Instructions
 
-1. Install Prisma inside `backend/`:
+1. Install stable Prisma 6 inside `backend/`:
    ```bash
    cd backend
-   npm install @prisma/client
-   npm install -D prisma
-   npx prisma init
+   npm install @prisma/client@6
+   npm install -D prisma@6
    ```
 2. Open `backend/prisma/schema.prisma` and replace content with the domain schema matching your frontend models.
 3. Configure `backend/.env` with your `DATABASE_URL`.
@@ -339,8 +338,8 @@ model Category {
    npx prisma migrate dev --name init
    ```
 2. Create `backend/prisma/seed.ts` to insert initial seed data.
-3. Add `"prisma": { "seed": "ts-node prisma/seed.ts" }` in `backend/package.json`.
-4. Install `ts-node`: `npm install -D ts-node`.
+3. Add `"prisma": { "seed": "tsx prisma/seed.ts" }` in `backend/package.json`.
+4. Install `tsx` (TypeScript runner supporting ESM): `npm install -D tsx`.
 5. Execute seed: `npx prisma db seed`.
 6. Inspect database visually using `npx prisma studio`.
 
