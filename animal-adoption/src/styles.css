@@ -4,3 +4,20 @@ body {
     padding: 0;
     box-sizing: border-box;
 }
+
+main,
+.page-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (orientation: landscape) {
+    main,
+    .page-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}

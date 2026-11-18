@@ -1,13 +1,14 @@
 export interface Account {
+  id: number
   name: string
-  description: string
-  profileImageUrl: string
-  coverImageUrl: string
   email: string
-  phone: string
+  password: string
+  description?: string
+  profileImageUrl?: string
+  coverImageUrl?: string
+  phone?: string
   notes?: string
-  locationName: string
-  latitude: number
-  longitude: number
+  latitude?: number
+  longitude?: number
   banned: boolean
 }
