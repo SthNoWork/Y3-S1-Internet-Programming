@@ -6,7 +6,7 @@ Requires Node 24 LTS (npm 11) and PostgreSQL (Docker is the easy way).
 
 ```bash
 cp .env.example .env         # then edit DATABASE_URL if needed
-docker compose up -d         # PostgreSQL on localhost:5432 (skip if you run it yourself)
+docker compose up -d         # PostgreSQL on localhost:5433 (skip if you run it yourself)
 npm install
 ```
 

@@ -27,7 +27,7 @@ model Event {
   booked      Int       @default(0)
   description String    @default("") @db.VarChar(500)
   createdAt   DateTime  @default(now())
-  // bookings    Booking[]   // TODO A: uncomment once the Booking model exists
+  bookings    Booking[]
 
   @@index([startsAt])
 }
@@ -38,3 +38,15 @@ model Event {
 // When an event is deleted, its bookings must be deleted too (onDelete: Cascade).
 // Add an index on eventId, like the one on Event.startsAt.
 // Then uncomment the bookings line in Event: it is the other side of the relation.
+
+model Booking {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(100)
+  email     String
+  seats     Int
+  createdAt DateTime @default(now())
+  eventId   Int
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+}

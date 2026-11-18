@@ -33,16 +33,31 @@ export class EventsService {
 
   // TODO B1: insert a new event and return it (booked and description have defaults in the schema)
   create(dto: CreateEventDto): Promise<Event> {
+    return this.prisma.event.create({
+      data: dto,
+    });
     throw new Error('TODO B1');
   }
 
   // TODO B2: 404 if the event does not exist, otherwise update only the fields in dto
   async update(id: number, dto: UpdateEventDto): Promise<Event> {
+    await this.findOne(id);
+
+    return this.prisma.event.update({
+      where: { id },
+      data: dto,
+    });
     throw new Error('TODO B2');
   }
 
   // TODO B3: 404 if the event does not exist, otherwise delete it
   async remove(id: number): Promise<void> {
+    await this.findOne(id);
+
+    this.prisma.event.delete({
+      where: { id },
+    });
+
     throw new Error('TODO B3');
   }
 }
