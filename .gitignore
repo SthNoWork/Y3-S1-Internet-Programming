@@ -1,0 +1,88 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.npm/
+npm-cache/
+
+# npm, npx, Yarn, and pnpm logs
+logs/
+*.log
+npm-debug.log*
+npx-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment variables and local secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+out/
+.output/
+.nest/
+
+# TypeScript and lint caches
+*.tsbuildinfo
+.eslintcache
+.oxlintcache
+.stylelintcache
+.prettiercache
+
+# Test and coverage outputs
+coverage/
+.nyc_output/
+.vitest/
+test-results/
+playwright-report/
+__screenshots__/
+
+# Cypress
+/cypress/videos/
+/cypress/screenshots/
+
+# Vitest and Vite
+.vite/
+*.timestamp-*-*.mjs
+
+# Prisma local databases and generated files
+prisma/dev.db
+prisma/dev.db-journal
+prisma/*.sqlite
+prisma/*.sqlite3
+prisma/*.db
+prisma/*.db-journal
+**/generated/prisma/
+**/.prisma/
+
+# General caches
+.cache/
+.turbo/
+.parcel-cache/
+
+# Editors and IDEs
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.code-workspace
+
+# OS and temporary files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.tmp
+*.temp
